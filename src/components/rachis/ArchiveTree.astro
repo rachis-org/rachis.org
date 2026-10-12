@@ -1,0 +1,128 @@
+---
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<figure class="archive-figure">
+  <div class="archive-scroll" role="region" aria-label={label} tabindex="0">
+    <slot name="tree" />
+  </div>
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .archive-figure {
+    min-width: 0;
+    margin: 0;
+    padding: 1.5rem;
+    border: 1px solid var(--rachis-border);
+    border-radius: 1rem;
+    background: var(--rachis-bg-card);
+  }
+  .archive-scroll {
+    overflow-x: auto;
+    padding: 0.25rem 0 0.5rem;
+  }
+  .archive-scroll:focus-visible {
+    outline: 2px solid var(--aw-color-accent);
+    outline-offset: 5px;
+  }
+  :global(.archive-name) {
+    display: block;
+    margin: 0 0 0.75rem 0.7rem;
+    font-size: 0.875rem;
+  }
+  figcaption {
+    margin-top: 1.25rem;
+    color: var(--aw-color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+  figcaption :global(p) {
+    margin: 0;
+  }
+  :global(.archive-tree) {
+    width: max-content;
+    min-width: 100%;
+    padding-right: 0.5rem;
+  }
+  :global(.archive-tree),
+  :global(.archive-tree ul) {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      Liberation Mono,
+      monospace;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  :global(.archive-tree ul) {
+    margin-left: 0.65rem;
+    padding-left: 1rem;
+  }
+
+  :global(.archive-tree li) {
+    position: relative;
+    margin: 0.15rem 0;
+    padding-left: 0.7rem;
+  }
+
+  :global(.archive-tree li::before) {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 0.7em;
+    width: 0.95rem;
+    border-top: 1px solid var(--rachis-border);
+  }
+
+  :global(.archive-tree li::after) {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: -0.35rem;
+    bottom: -0.35rem;
+    border-left: 1px solid var(--rachis-border);
+  }
+
+  :global(.archive-tree > li::before),
+  :global(.archive-tree > li::after) {
+    display: none;
+  }
+
+  :global(.archive-tree li:last-child::after) {
+    bottom: auto;
+    height: 1.05em;
+  }
+
+  :global(.archive-tree summary) {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  :global(.archive-tree summary::-webkit-details-marker) {
+    display: none;
+  }
+
+  :global(.archive-tree details > summary::before) {
+    content: '[+]';
+    color: var(--aw-color-text-muted);
+    font-weight: 600;
+  }
+
+  :global(.archive-tree details[open] > summary::before) {
+    content: '[-]';
+  }
+</style>

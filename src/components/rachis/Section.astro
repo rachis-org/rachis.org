@@ -1,0 +1,87 @@
+---
+interface Props {
+  id: string;
+  eyebrow?: string;
+  tone?: 'plain' | 'soft' | 'dark';
+  compact?: boolean;
+}
+const { id, eyebrow, tone = 'plain', compact = false } = Astro.props;
+---
+
+<section id={id} class:list={['rachis-section', `tone-${tone}`, { compact }]} aria-labelledby={`${id}-title`}>
+  <div class="section-inner">
+    <header class="section-heading">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <div id={`${id}-title`} class="section-title"><slot name="title" /></div>
+      {
+        Astro.slots.has('intro') && (
+          <div class="section-intro">
+            <slot name="intro" />
+          </div>
+        )
+      }
+    </header>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .rachis-section {
+    padding: 6rem 1.5rem;
+    scroll-margin-top: 6rem;
+  }
+  .section-inner {
+    max-width: 1160px;
+    margin: auto;
+  }
+  .section-heading {
+    max-width: 760px;
+    margin-bottom: 3rem;
+  }
+  .section-title :global(h2) {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.16;
+    font-weight: 650;
+    letter-spacing: -0.045em;
+    margin: 0.75rem 0 1.25rem;
+  }
+  .section-intro {
+    color: var(--aw-color-text-muted);
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+  .section-intro :global(p) {
+    margin: 0;
+  }
+  .tone-soft {
+    background: var(--rachis-bg-soft);
+  }
+  .compact {
+    padding-block: 3rem;
+  }
+  .compact .section-heading {
+    margin-bottom: 2rem;
+  }
+  .compact .section-title :global(h2) {
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    margin-bottom: 0;
+  }
+  .tone-dark {
+    background: #1a414c;
+    color: #ffffff;
+  }
+  .tone-dark .section-intro {
+    color: #d5e3e9;
+  }
+  .tone-dark .eyebrow {
+    color: #eb871d;
+  }
+  @media (max-width: 640px) {
+    .rachis-section {
+      padding: 4rem 1.25rem;
+    }
+    .rachis-section.compact {
+      padding-block: 3rem;
+    }
+  }
+</style>

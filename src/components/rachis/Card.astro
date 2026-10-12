@@ -1,0 +1,113 @@
+---
+interface Props {
+  id?: string;
+  label?: string;
+  number?: string;
+  variant?: 'plain' | 'distribution' | 'step';
+}
+const { id, label, number, variant = 'plain' } = Astro.props;
+---
+
+<article id={id} class:list={['rachis-card', `card-${variant}`]}>
+  {
+    (label || number) && (
+      <div class="card-label">
+        {number && <span class="step-number">{number}</span>}
+        {label}
+      </div>
+    )
+  }
+  <div class="card-title"><slot name="title" /></div>
+  <div class="card-copy"><slot /></div>
+  {
+    Astro.slots.has('actions') && (
+      <div class="card-actions">
+        <slot name="actions" />
+      </div>
+    )
+  }
+</article>
+
+<style>
+  .rachis-card {
+    min-width: 0;
+    scroll-margin-top: 6rem;
+    padding: 2rem;
+    border: 1px solid var(--rachis-border);
+    border-radius: 1rem;
+    background: var(--rachis-bg-card);
+  }
+  .card-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--aw-color-primary);
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .card-title :global(h3) {
+    margin: 0 0 1rem;
+    font-size: 1.375rem;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.35;
+  }
+  .card-copy {
+    color: var(--aw-color-text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .card-copy :global(p) {
+    margin: 0 0 1rem;
+  }
+  .card-copy :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .card-copy :global(a),
+  .card-actions :global(a) {
+    color: var(--aw-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .card-actions {
+    margin-top: 1.75rem;
+    font-weight: 600;
+  }
+  .card-actions :global(p) {
+    margin: 0;
+  }
+  .card-distribution {
+    padding: 2.5rem;
+    border-top: 3px solid var(--aw-color-primary);
+  }
+  .card-distribution .card-title :global(h3) {
+    font-size: 2.25rem;
+  }
+  .card-step {
+    border-color: #4b6c77;
+    background: #244c59;
+  }
+  .card-step .card-label {
+    color: #eb871d;
+  }
+  .card-step .card-copy {
+    color: #dce6ec;
+  }
+  .step-number {
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid #73909b;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+  }
+  @media (max-width: 640px) {
+    .rachis-card,
+    .card-distribution {
+      padding: 1.5rem;
+    }
+  }
+</style>

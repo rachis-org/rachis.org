@@ -1,0 +1,107 @@
+---
+import PluginGrid from './PluginGrid.astro';
+interface Props {
+  plugins: Array<{ name: string; description: string }>;
+  eyebrow?: string;
+}
+const { plugins, eyebrow } = Astro.props;
+---
+
+<section class="rachis-hero" aria-labelledby="hero-title">
+  <PluginGrid plugins={plugins} />
+  <div class="hero-wash" aria-hidden="true"></div>
+  <div class="hero-inner">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <div id="hero-title" class="hero-title"><slot name="title" /></div>
+    <div class="hero-copy"><slot name="subtitle" /></div>
+    <div class="hero-actions"><slot name="actions" /></div>
+    <div class="hero-transition"><slot name="transition" /></div>
+  </div>
+</section>
+
+<style>
+  .rachis-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 5.5rem 1.5rem 4.5rem;
+    background: var(--aw-color-bg-page);
+  }
+  .hero-wash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 45%, var(--rachis-hero-wash) 30%, transparent 95%);
+  }
+  .hero-inner {
+    position: relative;
+    margin: auto;
+    max-width: 1050px;
+    text-align: center;
+  }
+  .hero-title :global(h1) {
+    font-size: clamp(2.1rem, 4.4vw, 3.75rem);
+    line-height: 1.13;
+    font-weight: 650;
+    letter-spacing: -0.055em;
+    margin: 1.5rem 0;
+    text-wrap: balance;
+  }
+  .hero-copy {
+    max-width: 770px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    line-height: 1.85;
+    color: var(--aw-color-text-muted);
+  }
+  .hero-copy :global(p) {
+    margin: 0;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.25rem;
+  }
+  .hero-actions :global(p) {
+    margin: 0;
+  }
+  .hero-actions :global(a) {
+    display: inline-flex;
+    padding: 0.9rem 1.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--aw-color-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: var(--rachis-bg-card);
+    color: var(--aw-color-primary);
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .hero-actions :global(p:first-child a) {
+    background: var(--aw-color-primary);
+    color: var(--rachis-on-primary);
+  }
+  .hero-actions :global(a:hover) {
+    background: var(--rachis-bg-soft);
+  }
+  .hero-actions :global(p:first-child a:hover) {
+    background: var(--rachis-primary-hover);
+  }
+  .hero-transition {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--aw-color-text-muted);
+    max-width: 640px;
+    margin: 2.5rem auto 0;
+  }
+  @media (max-width: 640px) {
+    .rachis-hero {
+      padding: 4rem 1.25rem 3.5rem;
+    }
+    .hero-copy {
+      font-size: 1.05rem;
+    }
+  }
+</style>

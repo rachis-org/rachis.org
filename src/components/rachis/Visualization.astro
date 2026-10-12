@@ -1,0 +1,73 @@
+---
+interface Props {
+  src: string;
+  title: string;
+}
+
+const { src, title } = Astro.props;
+---
+
+<figure class="visualization-demo">
+  <div class="scroll-hint"><slot name="hint" /></div>
+  <div class="viewer-frame" role="region" aria-label={title} tabindex="0">
+    <iframe src={src} title={title} loading="lazy" allowfullscreen></iframe>
+  </div>
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .visualization-demo {
+    margin: 0;
+  }
+  .scroll-hint {
+    display: none;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--aw-color-text-muted);
+  }
+  .scroll-hint :global(p) {
+    margin: 0;
+  }
+  .viewer-frame {
+    overflow: auto;
+    border: 1px solid var(--rachis-border);
+    border-radius: 1rem;
+    background: #ffffff;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+    /* Keep the plot and its controls usable; smaller screens can scroll across. */
+    min-width: 1100px;
+    height: 780px;
+    border: 0;
+  }
+  .viewer-frame:focus-visible {
+    outline: 2px solid var(--aw-color-accent);
+    outline-offset: 5px;
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--aw-color-text-muted);
+  }
+  figcaption :global(p) {
+    margin: 0;
+  }
+  figcaption :global(a) {
+    color: var(--aw-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  @media (max-width: 1148px) {
+    .scroll-hint {
+      display: block;
+    }
+  }
+</style>

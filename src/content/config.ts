@@ -1,8 +1,11 @@
 import { z, defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { APP_BLOG, SITE } from 'astrowind:config';
 
 const distroCollection = defineCollection({
   loader: async () => {
+    // The framework landing page curates its distribution links in MDX.
+    if (SITE.name.toLowerCase() === 'rachis') return [];
     const response = await fetch("https://library.qiime2.org/json/distros.json");
     const data = await response.json();
     return data.distros.map((obj) => ({
@@ -21,6 +24,7 @@ const distroCollection = defineCollection({
 
 
 const blogLoader = async () => {
+    if (!APP_BLOG.isEnabled) return [];
     let api_key =  import.meta.env.DISCOURSE_API_KEY
     let headers = {
      'Api-Key': api_key,

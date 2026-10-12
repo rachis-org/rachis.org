@@ -56,7 +56,7 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme 
             )
           }
         </div>
-        <div class="text-sm text-muted flex gap-1">
+        <div class="text-sm text-muted flex flex-wrap gap-1">
           {
             secondaryLinks.map(({ text, href }, index) => (
               <>
@@ -80,7 +80,7 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme 
                 {links.map(({ text, href, ariaLabel }) => (
                   <li class="mb-2">
                     <a
-                      class="text-muted hover:text-gray-700 hover:underline dark:text-gray-400 transition duration-150 ease-in-out text-nowrap"
+                      class="text-muted hover:text-gray-700 hover:underline dark:text-gray-400 transition duration-150 ease-in-out"
                       href={href}
                       aria-label={ariaLabel}
                     >

@@ -1,0 +1,94 @@
+---
+interface Props {
+  plugins: Array<{ name: string; description: string }>;
+}
+const { plugins } = Astro.props;
+const rows = [plugins.slice(0, 4), plugins.slice(4, 8), plugins.slice(8, 12)];
+---
+
+<div class="plugin-grid" aria-hidden="true">
+  {
+    rows.map((row) => (
+      <div class="plugin-row">
+        {[0, 1, 2].map(() => (
+          <div class="plugin-group">
+            {row.map(({ name, description }) => (
+              <div class="plugin-tile">
+                <strong>{name}</strong>
+                <span>{description}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .plugin-grid {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    opacity: 0.55;
+    transform: rotate(0deg) scale(1.15);
+  }
+  .plugin-row {
+    display: flex;
+    width: max-content;
+    animation: drift 160s linear infinite;
+  }
+  .plugin-row:nth-child(2) {
+    animation-direction: reverse;
+    animation-duration: 190s;
+  }
+  .plugin-row:nth-child(3) {
+    animation-duration: 175s;
+  }
+  .plugin-group {
+    display: flex;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+  .plugin-tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 17rem;
+    height: 6rem;
+    border: 1px solid var(--rachis-border);
+    border-radius: 0.8rem;
+    background: var(--rachis-bg-card);
+    padding: 1rem;
+  }
+  .plugin-tile strong {
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--aw-color-primary);
+  }
+  .plugin-tile > span:last-child {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    color: var(--aw-color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+  }
+  @keyframes drift {
+    to {
+      transform: translateX(-33.333333%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plugin-row {
+      animation: none;
+    }
+  }
+</style>

@@ -1,1 +1,10 @@
-<script defer data-domain="qiime2.org" src="https://plausible.io/js/script.outbound-links.js"></script>
+---
+import { SITE } from 'astrowind:config';
+const domain = new URL(SITE.site).hostname;
+---
+
+{
+  import.meta.env.PROD && (
+    <script is:inline defer data-domain={domain} src="https://plausible.io/js/script.outbound-links.js" />
+  )
+}

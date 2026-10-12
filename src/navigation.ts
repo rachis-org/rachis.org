@@ -1,130 +1,101 @@
-import { getAsset } from './utils/permalinks';
+// Shared destinations for the thin network bar. A distribution site can render
+// <NavBanner currentSite="qiime2" /> to use the breadcrumb and sibling switcher.
+export const networkSites = [
+  { id: 'rachis', text: 'Rachis', href: 'https://rachis.org' },
+  { id: 'qiime2', text: 'QIIME 2', href: 'https://qiime2.org' },
+  { id: 'moshpit', text: 'MOSHPIT', href: 'https://moshpit.qiime2.org' },
+] as const;
+
+// Shared utilities stay visible on both the framework and distribution sites.
+export const networkUtilityLinks = [
+  { text: 'Library', href: 'https://library.qiime2.org' },
+  { text: 'View', href: 'https://view.qiime2.org' },
+  { text: 'Forum', href: 'https://forum.qiime2.org' },
+] as const;
+
+// Shared learning and community destinations.
+const learnLinks = [
+  { text: 'Developer Docs', href: 'https://develop.qiime2.org/en/stable/', external: true },
+  { text: 'Marker Gene (Amplicon) Analysis', href: 'https://amplicon-docs.qiime2.org', external: true },
+  { text: 'Metagenome Analysis', href: 'https://moshpit.qiime2.org', external: true },
+  { text: 'The Stacks: all documentation', href: 'https://library.qiime2.org/docs', external: true },
+];
+
+const communityLinks = [
+  {
+    text: 'Getting Involved',
+    href: 'https://use.qiime2.org/en/stable/how-to-guides/get-involved.html',
+    external: true,
+  },
+  { text: 'Library', href: 'https://library.qiime2.org', external: true },
+  { text: 'Forum', href: 'https://forum.qiime2.org', external: true },
+];
+
+const codeOfConductLink = {
+  text: 'Code of Conduct',
+  href: 'https://github.com/qiime2/.github/blob/main/CODE-OF-CONDUCT.md',
+  external: true,
+};
 
 export const headerData = {
   links: [
-    {
-      text: 'Features',
-      href: '/#/features'
-    },
-    {
-      text: 'Funding',
-      href: '/#/funding'
-    },
-    {
-      text: 'News',
-      href: '/news'
-    },
-    {
-      text: 'Learn',
-      links: [
-        {
-          text: 'Install instructions',
-          href: 'https://install.qiime2.org',
-          external: true
-        },
-        {
-          text: 'Marker Gene (Amplicon) Analysis',
-          href: 'https://amplicon-docs.qiime2.org',
-          external: true
-        },
-        {
-          text: 'Metagenome Analysis',
-          href: 'https://moshpit.qiime2.org',
-          external: true
-        },
-        {
-          text: 'The Stacks: all documentation',
-          href: 'https://library.qiime2.org/docs',
-          external: true
-        }
-      ]
-    },
-    {
-      text: 'Community',
-      links: [
-        {
-          text: 'Getting Involved',
-          href: 'https://use.qiime2.org/en/stable/how-to-guides/get-involved.html',
-          external: true,
-        },
-        {
-          text: 'Forum',
-          href: 'https://forum.qiime2.org',
-          external: true,
-        },
-        {
-          text: 'Library',
-          href: 'https://library.qiime2.org',
-          external: true,
-        },
-        {
-          text: 'Code of Conduct',
-          href: 'https://github.com/qiime2/.github/blob/main/CODE-OF-CONDUCT.md',
-          external: true,
-        },
-      ]
-    }
+    { text: 'Why Rachis', href: '/#why-rachis' },
+    { text: 'Build', href: '/#build' },
+    { text: 'Impact', href: '/#impact' },
+    { text: 'Learn', links: learnLinks },
+    { text: 'Community', links: [...communityLinks, codeOfConductLink] },
   ],
-  actions: [
-    { text: 'Install', variant: 'primary',  href: 'https://install.qiime2.org', target: '_blank' }],
+  actions: [{ text: 'Developer docs', variant: 'primary' as const, href: 'https://develop.qiime2.org/en/stable/' }],
 };
 
 export const footerData = {
   links: [
     {
-      title: 'QIIME 2',
-      links: [
-        { text: 'Library', href: 'https://library.qiime2.org' },
-        { text: 'View', href: 'https://view.qiime2.org' },
-        { text: 'Forum', href: 'https://forum.qiime2.org' },
-        { text: 'Citing', href: 'https://doi.org/10.1038/s41587-019-0209-9' },
-      ],
-    },
-    {
-      title: 'Library',
-      links: [
-        { text: 'Installation', href: 'https://install.qiime2.org' },
-        { text: 'Documentation', href: 'https://library.qiime2.org/docs' },
-        { text: 'Videos', href: 'https://library.qiime2.org/videos' },
-        { text: 'Data Resources', href: 'https://library.qiime2.org/data-resources' },
-        { text: 'Available Plugins', href: 'https://library.qiime2.org/plugins' },
-        { text: 'Old User Docs', href: 'https://docs.qiime2.org/2024.10/' },
-      ],
-    },
-    {
-      title: 'Forum',
-      links: [
-        { text: 'Announcements', href: 'https://forum.qiime2.org/c/announcements/8' },
-        { text: 'User Support', href: 'https://forum.qiime2.org/c/user-support/6' },
-        { text: 'Library Plugin Support', href: 'https://forum.qiime2.org/c/community-plugin-support/24' },
-        { text: 'General Discussion', href: 'https://forum.qiime2.org/c/general-discussion/23' },
-        { text: 'Developer Discussion', href: 'https://forum.qiime2.org/c/dev-discussion/7' },
-        { text: 'Community Contributions', href: 'https://forum.qiime2.org/c/community-contributions/15' },
-      ],
-    },
-    {
       title: 'For Developers',
       links: [
-        { text: 'Developing with QIIME 2', href: 'https://develop.qiime2.org/en/stable/' },
-        { text: 'Plugin Development Tutorial', href: 'https://develop.qiime2.org/en/stable/plugins/tutorials/intro.html' },
+        { text: 'Developer documentation', href: 'https://develop.qiime2.org/en/stable/' },
+        { text: 'Plugin tutorial', href: 'https://develop.qiime2.org/en/stable/plugins/tutorials/intro.html' },
         { text: 'Plugin API', href: 'https://develop.qiime2.org/en/stable/plugins/references/api/intro.html' },
-        { text: 'Python SDK', href: 'https://develop.qiime2.org/en/stable/interfaces/references/api.html' },
-        { text: 'QZA Internals', href: 'https://develop.qiime2.org/en/stable/framework/explanations/archives.html' },
-        { text: 'QIIME 2 GitHub', href: 'https://github.com/qiime2' },
+        { text: 'Result archives', href: 'https://develop.qiime2.org/en/stable/framework/explanations/archives.html' },
+        { text: 'Source code', href: 'https://github.com/rachis-org/rachis' },
+      ],
+    },
+    {
+      title: 'Learn',
+      links: [
+        ...learnLinks,
+        { text: 'Videos', href: 'https://library.qiime2.org/videos' },
+        { text: 'Data resources', href: 'https://library.qiime2.org/data-resources' },
+        { text: 'Plugin library', href: 'https://library.qiime2.org/plugins' },
+      ],
+    },
+    {
+      title: 'Community',
+      links: [
+        ...communityLinks,
+        { text: 'Announcements', href: 'https://forum.qiime2.org/c/announcements/8' },
+        { text: 'User support', href: 'https://forum.qiime2.org/c/user-support/6' },
+        { text: 'Developer discussion', href: 'https://forum.qiime2.org/c/dev-discussion/7' },
+        { text: 'Community contributions', href: 'https://forum.qiime2.org/c/community-contributions/15' },
+      ],
+    },
+    {
+      title: 'Network',
+      links: [
+        { text: 'QIIME 2', href: 'https://qiime2.org' },
+        { text: 'MOSHPIT', href: 'https://moshpit.qiime2.org' },
+        { text: 'QIIME 2 View', href: 'https://view.qiime2.org' },
       ],
     },
   ],
   secondaryLinks: [
-    { text: 'Software License', href: 'https://github.com/qiime2/qiime2/blob/dev/LICENSE' },
+    { text: 'Software license', href: 'https://github.com/rachis-org/rachis/blob/dev/LICENSE' },
     { text: 'Contributing', href: 'https://github.com/qiime2/.github/blob/main/CONTRIBUTING.md' },
-    { text: 'Code of Conduct', href: 'https://github.com/qiime2/.github/blob/main/CODE-OF-CONDUCT.md' },
+    codeOfConductLink,
   ],
-  socialLinks: [
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/qiime2' },
-    { ariaLabel: 'Bluesky', icon: 'tabler:brand-bluesky', href: 'https://bsky.app/profile/qiime2.org' },
-    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
-  ],
+  socialLinks: [],
   footNote: `
-    Original <a class='underline' href="https://github.com/onwidget/astrowind">template</a> by <a class="underline" href="https://onwidget.com/" target="_blank" rel="noopener noreferrer"> onWidget</a>. · Site maintained by the <a class="underline" href="https://cap-lab.bio/" target="_blank" rel="noopener noreferrer">Caporaso Lab</a>. · All rights reserved.
+    Site maintained by the <a class="underline" href="https://cap-lab.bio/">Caporaso Lab</a>.
+    Original <a class="underline" href="https://github.com/onwidget/astrowind">template</a> by onWidget.
   `,
 };

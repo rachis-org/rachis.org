@@ -1,6 +1,6 @@
 site:
-  name: QIIME 2
-  site: 'https://qiime2.org'
+  name: Rachis
+  site: 'https://rachis.org'
   base: '/'
   trailingSlash: false
 
@@ -9,18 +9,18 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: QIIME 2 Homepage
+    default: Rachis — A shared foundation for scientific software
     template: '%s'
-  description: "QIIME 2 is an AI-ready microbiome multi-omics data science platform"
+  description: 'Build scientific plugins and distributions with automatic provenance, typed data, and automatically generated interfaces. Rachis is the open-source framework behind QIIME 2 and MOSHPIT.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: QIIME 2
+    site_name: Rachis
     images:
-      - url: '~/assets/images/default.png'
-        width: 200
-        height: 200
+      - url: '~/assets/images/rachis-social.png'
+        width: 1200
+        height: 630
     type: website
 
 i18n:
@@ -29,7 +29,8 @@ i18n:
 
 apps:
   blog:
-    isEnabled: true
+    # Distribution news stays on the distribution sites.
+    isEnabled: false
     postsPerPage: 6
 
     post:

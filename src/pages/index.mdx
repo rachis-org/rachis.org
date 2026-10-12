@@ -1,244 +1,471 @@
 ---
 layout: ~/layouts/PageLayout.astro
-title: 'QIIME 2 Homepage'
+title: 'Rachis — A shared foundation for scientific software'
 ---
-import Text from '~/components/widgets/Text.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Features from '~/components/widgets/Features.astro';
-import FeatureItem from '~/components/widgets/FeatureItem.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import Steps from '~/components/widgets/Steps.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import FAQSection from '~/components/widgets/FAQSection.astro';
-import FAQItem from '~/components/widgets/FAQItem.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import { getCollection } from 'astro:content';
 
-export const distros = (await getCollection('distros')).map(({ data }) => (data));
+import Hero from '~/components/rachis/Hero.astro';
+import Section from '~/components/rachis/Section.astro';
+import Card from '~/components/rachis/Card.astro';
+import Visualization from '~/components/rachis/Visualization.astro';
+import ArchiveTree from '~/components/rachis/ArchiveTree.astro';
 
+export /*
+Keep editorial copy here in MDX. The components in src/components/rachis
+provide layout and behavior; their slots render the Markdown below.
+Headings belong in the slots too, so their wording and emphasis stay editable.
+Network destinations and site navigation live in src/navigation.ts.
+*/ {};
 
-export {/*
-An explanation of what is happening in this file and where things live.
+export const plugins = [
+  {
+    name: 'q2-diversity',
+    description:
+      'Plugin for exploring community diversity.',
+  },
+  {
+    name: 'q2-assembly',
+    description:
+      'QIIME 2 plugin for (meta)genome assembly.',
+  },
+  {
+    name: 'q2-emperor',
+    description:
+      'Plugin for ordination plotting with Emperor.',
+  },
+  {
+    name: 'q2-feature-classifier',
+    description:
+      'Plugin for taxonomic classification.',
+  },
+  {
+    name: 'q2-phylogeny',
+    description:
+      'Plugin for generating and manipulating phylogenies.',
+  },
+  {
+    name: 'q2-mag',
+    description:
+      'Rachis plugin for contig binning, bin quality assessment and MAG dereplication.',
+  },
+  {
+    name: 'q2-dada2',
+    description:
+      'Plugin for sequence quality control with DADA2.',
+  },
+  {
+    name: 'q2-annotate',
+    description:
+      'QIIME 2 plugin for metagenome analysis.',
+  },
+  {
+    name: 'q2-feature-table',
+    description:
+      'Plugin for working with sample by feature tables.',
+  },
+  {
+    name: 'q2-demux',
+    description:
+      'Plugin for demultiplexing & viewing sequence quality.',
+  },
+  {
+    name: 'q2-cutadapt',
+    description:
+      'Plugin for removing adapter sequences, primers, and other unwanted sequence from sequence data.',
+  },
+  {
+    name: 'q2-types',
+    description:
+      'Plugin defining types for microbiome analysis.',
+  },
+];
 
-This is an MDX file. It's markdown with a bit of JSX syntax, you may wish to
-install a language pack for it for your editor. That's also why there's a weird
-export statement in front of this comment.
-
-The rest of this is Astro.
-
-"Dynamic" data is sourced from collection loaders in:
-  - src/content/config.ts
-    (This is where forum posts and distros are coming from.)
-
-URLs and Navigation should stay largely here:
-  - src/navigation.ts
-
-Config for the theme is here:
-  - src/config.yaml
-
-Colors live here:
-  - src/components/CustomStyles.astro
-
-The rest is pretty standard looking.
-
-*/}
-
-
-<Hero
-  actions={[
-    {
-      variant: 'primary',
-      text: 'Install QIIME 2',
-      href: 'https://install.qiime2.org/',
-      target: '_blank',
-      icon: 'tabler:arrow-forward',
-    },
-    { text: 'Learn more', href: '/#/features' },
-  ]}
->
+<Hero plugins={plugins} eyebrow="A shared foundation for scientific software">
   <Fragment slot="title">
 
-QIIME 2 is an AI-ready **microbiome multi-omics data science** platform
+# Bring your methods and create connected, traceable, and reusable results.
 
   </Fragment>
   <Fragment slot="subtitle">
 
-[Trusted](https://scholar.google.com/scholar?hl=en&as_sdt=805&sciodt=0,3&cites=6935821321202015575,17795719731389093288,9078996940723452772,6129633569390757233,261340794755367594,16903127068530972426&scipsc=&q=&scisbd=1_),
-[free](https://github.com/qiime2/qiime2/blob/dev/LICENSE),
-[open source](https://github.com/qiime2),
-[extensible](https://develop.qiime2.org),
-and [community developed](https://library.qiime2.org)
-and [supported](https://forum.qiime2.org/g/q2-mods) bioinformatics.
+Rachis is the open-source framework behind QIIME 2 and MOSHPIT. Build scientific plugins and distributions with automatic provenance, typed data, and automatically generated interfaces.
+
+  </Fragment>
+  <Fragment slot="actions">
+
+[Build with Rachis](https://develop.qiime2.org/en/stable/)
+
+[Explore distributions](#distributions)
+
+  </Fragment>
+  <Fragment slot="transition">
+
+Rachis is the new name for the QIIME 2 framework. QIIME 2 continues as a scientific distribution built on Rachis. Learn more [here](https://news.rachis.org/en/latest/2025-10-23-q2f-transition/).
 
   </Fragment>
 </Hero>
 
+<Section id="framework" eyebrow="How Rachis fits together" tone="soft" compact>
+  <Fragment slot="title">
 
-<Stats
-  stats={[
-    {
-      title: 'Citations',
-      amount: '65K+',
-      href: 'https://scholar.google.com/scholar?hl=en&as_sdt=805&sciodt=0,3&cites=6935821321202015575,17795719731389093288,9078996940723452772,6129633569390757233,261340794755367594,16903127068530972426&scipsc=&q=&scisbd=1_'
-    },
-    {
-      title: 'Forum Users',
-      amount: '8K+',
-      href: 'https://forum.qiime2.org'
-    },
-    {
-      title: 'Patent Applications',
-      amount: '2K+',
-      href: 'https://www.lens.org/lens/search/patent/list?q=qiime%20OR%20qiime2&p=0&n=10&s=_score&d=%2B&f=false&e=false&l=en&authorField=author&dateFilterField=publishedDate&orderBy=%2B_score&presentation=false&preview=true&stemmed=true&useAuthorId=false'
-    },
-    {
-      title: 'Clinical Trials',
-      amount: '70+',
-      href: 'https://clinicaltrials.gov/search?term=qiime%20OR%20qiime2'
-    },
-  ]}
-/>
+## Artifacts, plugins, and interfaces.
 
-
-<Features
-  id="/features"
-  tagline="Features"
-  title="Our users love these features"
-  subtitle="The QIIME 2 Framework (Q2F) empowers researchers to conduct reproducible biological data science through a variety of interfaces and using diverse methods.">
-
-  <FeatureItem title='Latest Methods' icon='tabler:microscope'>
-QIIME 2 integrates dozens of plugins and hundreds of bioinformatics methods, allowing users to perform cutting-edge microbiome analysis with interactive visualizations and robust statistical tools.
-  </FeatureItem>
-
-  <FeatureItem title='Automated Provenance Recording' icon='tabler:history'>
-All commands, parameters, and computational environments used during analysis are automatically recorded with decentralized data provenance.
-This ensures full transparency and reproducibility.
-With data provenance embedded as metadata in your data and visualizations, your data won't become disconnected from the details of how it was created.
-  </FeatureItem>
-
-  <FeatureItem title='Multiple Interfaces' icon='tabler:stack-2'>
-All analytic functionality is available through multiple interfaces: Python 3 and R APIs for programmatic access; a command line interface (CLI) for efficient scripting, and a graphical interface (GUI) via Galaxy for an intuitive, visual experience.
-Regardless of your computational background, QIIME 2 has an interface that will enable you to work efficiently!
-  </FeatureItem>
-
-  <FeatureItem title='Extensible' icon='tabler:hexagon-plus'>
-Q2F is plugin-based, making it straight-forward to extend and customize the platform.
-Developers can integrate their bioinformatics methods, leveraging an extensive library of existing functionality and leaving the interfaces and provenance recording to the framework.
-  </FeatureItem>
-
-  <FeatureItem title='Accessible' icon='tabler:book-2'>
-QIIME 2 is designed to be accessible to all users, from students to seasoned researchers.
-It provides simplified workflows, comprehensive tutorials, and clear documentation to streamline microbiome analysis.
-Visit the [QIIME 2 Library](https://library.qiime2.org) for guides, tutorials, and reference materials.
-  </FeatureItem>
-
-  <FeatureItem title='Open Source Community' icon='tabler:users'>
-QIIME 2 thrives because of its community, which drives the direction of the project.
-The [QIIME 2 Forum](https://forum.qiime2.org) is the hub of the community, and serves as a free resource for discussions, troubleshooting, and collaboration.
-Users are encouraged to engage and share their insights.
-You can learn about our expectations of community members in the [code of conduct](https://github.com/qiime2/.github/blob/main/CODE-OF-CONDUCT.md).
-  </FeatureItem>
-</Features>
-
-<Features2
-    tagline="Distributions"
-    title="Multi-Omics"
-    subtitle="The QIIME 2 Framework supports expanding -omics data types through specialized distributions."
-    items={distros}>
-  <Fragment slot="bg">
-    <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
   </Fragment>
-</Features2>
+  <div className="architecture-grid">
+    <div className="editorial-copy">
+
+### Artifacts carry the data.
+
+Typed data and its analysis history travel together. Plugins exchange artifacts so results from one method can become inputs to another.
+
+    </div>
+    <div className="editorial-copy">
+
+### Plugins bring your methods.
+
+Add methods, visualizations, and pipelines. Register their inputs, outputs, and parameters so Rachis can connect them to other plugins and interfaces.
+
+    </div>
+    <div className="editorial-copy">
+
+### Interfaces reach your users.
+
+The same actions are available through command-line, programmatic, and Galaxy interfaces. Users can work with your plugin through the interface that fits their workflow.
+
+    </div>
+  </div>
+</Section>
+
+<Section id="why-rachis" eyebrow="What your methods gain">
+  <Fragment slot="title">
+
+## Give your analyses a shared foundation.
+
+  </Fragment>
+  <div className="rachis-grid grid-four">
+    <Card>
+      <Fragment slot="title">
+
+### Traceable results
+
+      </Fragment>
+
+Share outputs that collaborators can inspect and retrace.
+
+    </Card>
+    <Card>
+      <Fragment slot="title">
+
+### Safer analysis
+
+      </Fragment>
+
+Catch incompatible inputs before expensive computation begins.
+
+    </Card>
+    <Card>
+      <Fragment slot="title">
+
+### Less infrastructure to maintain
+
+      </Fragment>
+
+Support different interfaces without maintaining separate implementations of your method.
+
+    </Card>
+    <Card>
+      <Fragment slot="title">
+
+### Methods that work together
+
+      </Fragment>
+
+Combine your method with existing plugins to create reusable workflows.
+
+    </Card>
+
+  </div>
+</Section>
+
+<Section id="follow-a-result" eyebrow="Artifact internals">
+  <Fragment slot="title">
+
+## A result is more useful when you can follow its story.
+
+  </Fragment>
+  <Fragment slot="intro">
+
+An analysis embeds many local decisions on tooling, parameters, and even software versions. Rachis results record all of this in automatically managed and decentralized data provenance.
+
+  </Fragment>
+  <div className="artifact-grid">
+    <ArchiveTree label="Contents of the asv-seqs.qza archive">
+      <Fragment slot="tree">
+        <strong className="archive-name">asv-seqs.qza</strong>
+        <ul className="archive-tree">
+          <li>
+            <details open>
+              <summary><span>6e62c78a-f6d7-4a77-a778-d773cf8fa9c1/</span></summary>
+              <ul>
+                <li><span>VERSION</span></li>
+                <li><span>checksums.sha512</span></li>
+                <li>
+                  <details open>
+                    <summary><strong>data/</strong></summary>
+                    <ul>
+                      <li><span>dna-sequences.fasta</span></li>
+                    </ul>
+                  </details>
+                </li>
+                <li><strong>metadata.yaml</strong></li>
+                <li>
+                  <details open>
+                    <summary><strong>provenance/</strong></summary>
+                    <ul>
+                      <li><span>VERSION</span></li>
+                      <li>
+                        <details open>
+                          <summary><span>action/</span></summary>
+                          <ul>
+                            <li><span>action.yaml</span></li>
+                          </ul>
+                        </details>
+                      </li>
+                      <li>
+                        <details>
+                          <summary><strong>artifacts/</strong></summary>
+                          <ul>
+                            <li>
+                              <details open>
+                                <summary><span>1a4485df-2031-4e98-aecf-193ee8497f80/</span></summary>
+                                <ul>
+                                  <li><span>VERSION</span></li>
+                                  <li>
+                                    <details open>
+                                      <summary><span>action/</span></summary>
+                                      <ul>
+                                        <li><span>action.yaml</span></li>
+                                      </ul>
+                                    </details>
+                                  </li>
+                                  <li><span>citations.bib</span></li>
+                                  <li><span>metadata.yaml</span></li>
+                                </ul>
+                              </details>
+                            </li>
+                            <li>
+                              <details open>
+                                <summary><span>d27a741c-f7e9-48af-ad8a-a479bd89ec9e/</span></summary>
+                                <ul>
+                                  <li><span>VERSION</span></li>
+                                  <li>
+                                    <details open>
+                                      <summary><span>action/</span></summary>
+                                      <ul>
+                                        <li><span>action.yaml</span></li>
+                                      </ul>
+                                    </details>
+                                  </li>
+                                  <li><span>citations.bib</span></li>
+                                  <li><span>metadata.yaml</span></li>
+                                </ul>
+                              </details>
+                            </li>
+                          </ul>
+                        </details>
+                      </li>
+                      <li><span>citations.bib</span></li>
+                      <li><span>conda-env.yaml</span></li>
+                      <li><span>metadata.yaml</span></li>
+                    </ul>
+                  </details>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </Fragment>
+
+A single portable file carries data, analysis metadata, and provenance history. Expand the folders to explore what travels with a result.
+
+    </ArchiveTree>
+    <div className="editorial-copy">
+
+### Built to remain useful.
+
+Artifacts (`.qza`) and visualizations (`.qzv`) are standard ZIP archives. Their data, metadata, and provenance can be inspected without a centralized service.
+
+[Look inside a result](https://develop.qiime2.org/en/stable/framework/explanations/archives.html)
+
+### The history stays with the result.
+
+A collaborator can inspect the recorded analysis and use provenance replay to re-generate code for the steps that produced it. The `provenance/artifacts/` directory preserves the history of upstream results.
+
+[Learn about provenance replay](https://forum.qiime2.org/t/provenance-replay-beta-release-and-tutorial/23279)
+
+### Verify what you share.
+
+Optional cryptographic signatures let collaborators verify a result's signer and integrity when sharing it.
+
+[Sign and verify results](https://use.qiime2.org/en/stable/how-to-guides/sign-and-verify-artifacts/)
+
+    </div>
+  </div>
+</Section>
+
+<Section id="visualizations" eyebrow="See a result in action">
+  <Fragment slot="title">
+
+## Interactive Visualizations
+
+  </Fragment>
+  <Fragment slot="intro">
+
+Give your users a way to explore their results. Plugins can create interactive visualizations that travel with the data and analysis history, ready to share and open in QIIME 2 View.
+
+  </Fragment>
+  <Visualization
+    src="https://view.qiime2.org/visualization/?src=https://raw.githubusercontent.com/qiime2/q2-fmt/master/demo/raincloud-baseline0.qzv"
+    title="Interactive raincloud plots in QIIME 2 View"
+  >
+    <Fragment slot="hint">
+
+On smaller screens, scroll across the viewer to reach the plot controls.
+
+    </Fragment>
+
+Raincloud plots created with [q2-fmt](https://library.qiime2.org/plugins/qiime2/q2-fmt/overview). Try the plot controls, or select **Provenance** to explore how this result was created.
+
+[Open this example in QIIME 2 View →](https://view.qiime2.org/visualization/?src=https://raw.githubusercontent.com/qiime2/q2-fmt/master/demo/raincloud-baseline0.qzv)
+
+  </Visualization>
+</Section>
+
+<Section id="build" eyebrow="Build with Rachis">
+  <Fragment slot="title">
+
+## Build for your community.
+
+  </Fragment>
+  <div className="rachis-grid grid-three">
+    <Card>
+      <Fragment slot="title">
+
+### Build a plugin
+
+      </Fragment>
+
+Wrap a tool or implement a new method, then register its inputs, outputs, and parameters.
+
+      <Fragment slot="actions">
+
+[Build your first plugin →](https://develop.qiime2.org/en/stable/plugins/tutorials/intro.html)
+
+      </Fragment>
+    </Card>
+    <Card id="distributions">
+      <Fragment slot="title">
+
+### Build on a distribution
+
+      </Fragment>
 
 
-<FAQSection
-    tagline="FAQs"
-    title="Frequently Asked Questions"
-    subtitle=""
-    classes={{ container: '' }}>
+**[QIIME 2](https://qiime2.org)** — Tools for microbiome marker gene analysis from raw sequencing data through publication quality visualizations and statistics.
 
-  <FAQItem title='How do I pronounce QIIME 2?'>
-QIIME 2 is pronounced "chime two".
-It is an AI-ready microbiome multi-omics data science platform that is free, open source, extensible, and community-developed.
-QIIME 2 enables researchers to conduct reproducible microbiome analysis using a variety of interfaces and tools.
-  </FAQItem>
+**[MOSHPIT](https://moshpit.qiime2.org)** — Tools for whole metagenome assembly, annotation, and analysis.
+    </Card>
+    <Card>
+      <Fragment slot="title">
 
-  <FAQItem title='Is QIIME 2 free to use?'>
-Yes!
-QIIME 2 is completely free and open source, meaning anyone can use, modify, and contribute to its development under our [BSD 3-Clause License](https://github.com/qiime2/qiime2/blob/dev/LICENSE).
-That includes commercial use.
-  </FAQItem>
+### Build your own distribution
 
-  <FAQItem title='Is it difficult to install and use QIIME 2?'>
-Not at all!
+      </Fragment>
 
-* If you have QIIME 2 results and want to interact with them without installing QIIME 2, use [QIIME 2 View](https://view.qiime2.org).
-* If you want to install and use QIIME 2 on your own system, follow the [installation guide](https://library.qiime2.org/quickstart).
+Choose compatible plugins, add your own, and provide documentation and workflows under your community's identity.
 
-To learn marker gene (i.e., amplicon) analysis with QIIME 2, see the [amplicon docs](https://amplicon-docs.readthedocs.io).
-To learn metagenome (i.e., shotgun) analysis with QIIME 2, see the [MOSHPIT docs](https://moshpit-docs.readthedocs.io).
-To learn advanced techniques for working with the QIIME 2 Framework, see [*Using QIIME 2*](https://use.qiime2.org).
-To build and distribute your own plugins, see [*Developing with QIIME 2*](https://develop.qiime2.org).
-As of March 2025, we're doing an extensive re-write of our documentation using [JupyterBook](https://jupyterbook.org/en/stable/intro.html) and [Diátaxis](https://diataxis.fr/) to modernize it and to improve organization and accessibility.
-  </FAQItem>
+      <Fragment slot="actions">
 
-  <FAQItem title='Will my data survive the test of time?'>
-Yes!
-All data generated by QIIME 2 is stored in .zip files.
-The file extensions `.qza` and `.qzv` stand for *QIIME Zipped Artifact* and *QIIME Zipped Visualization*.
-You can open them with any unzip utility, such as `unzip`.
+[Explore distribution development →](https://github.com/qiime2/distributions)
 
-We call these "archives", and they contain your data in the normal formats (`.fastq.gz`, `.fasta`, `.biom`, ...).
-Additionally, these archives have embedded provenance which means that even without QIIME 2 you will still have precise details on how the data was generated.
-There is no need to keep a centralized database (or distributed blockchain) online for 20 years: the provenance always lives with your data inside the zip file.
-You can learn about the archive format [here](https://develop.qiime2.org/en/stable/framework/explanations/archives.html).
-  </FAQItem>
+      </Fragment>
+    </Card>
 
-  <FAQItem title='What makes QIIME 2 extensible? Can I customize it to fit my work?'>
-The professionally engineered architecture of QIIME 2 makes it an extremely modular and customizable tool.
+  </div>
+  <div className="section-footnote">
 
-The *QIIME 2 Framework (Q2F)* provides the general purpose data science functionality, like data provenance tracking, and serves as the glue between *plugins* and the many *interfaces*.
-The *plugins* provide all analytic functionality, and you can have as many of these as you need.
-Groups of plugins that are intended to be used together are shared as *distributions*, which makes it easy to get started right away with the most common workflows.
-  </FAQItem>
+[Discuss your plugin or distribution with the community](https://forum.qiime2.org/c/dev-discussion/7).
 
-  <FAQItem title='How can I get help or become involved with the QIIME 2 community?'>
-The [QIIME 2 Forum](https://forum.qiime2.org) is the primary resource for support and community interaction.
-There you can find announcements, job postings, and technical assistance from a vibrant and active microbiome data science community.
+  </div>
+</Section>
 
-If you're not a software developer and want to get involved in the project, see [*How to Get Involved in the QIIME 2 Community*](https://use.qiime2.org/en/stable/how-to-guides/get-involved.html).
-If you are a developer and want to get involved in the project, see [our *Contributing Guide*](https://github.com/qiime2/.github/blob/main/CONTRIBUTING.md).
-  </FAQItem>
+<Section id="impact" eyebrow="Infrastructure worth sustaining" tone="soft">
+  <Fragment slot="title">
 
-  <FAQItem title='What do you mean by "AI-Ready"?'>
-We mean that you'll always know how the QIIME 2 Artifacts that you're working with were generated (because of Q2F's data provenance recording), and that the steps performed to create them made logical sense (because of Q2F's Artifact Class system).
-We are now working on functionality that allows users to sign and add a license to their data, so you'll always know if or how it can be used.
+## Invest in foundations that scientific communities can share.
 
-Garbage In, Garbage Out.
-Artifacts In, Actual Intelligence Out.
-  </FAQItem>
+  </Fragment>
+  <Fragment slot="intro">
 
-  <FAQItem title='Where can I find more QIIME 2 plugins?'>
-The [QIIME 2 Library](https://library.qiime2.org) hosts a variety of plugins and tools developed by the community, expanding QIIME 2’s capabilities beyond its base distributions.
-You can also refer to [*Community Contributions*](https://forum.qiime2.org/c/community-contributions/15) on the QIIME 2 Forum.
-  </FAQItem>
-</FAQSection>
+Shared infrastructure lets new methods benefit from existing engineering, and lets that engineering serve new fields. QIIME 2 and MOSHPIT show how a common framework can support distinct scientific workflows and communities.
 
-<Text id='/funding' title='Support from federal and foundation grants' tagline='funding'>
-QIIME 2 is funded in part by NIH National Cancer Institute Informatics Technology for Cancer Research grant [1U24CA248454-01](https://reporter.nih.gov/project-details/9951750), and by grant [DAF2019-207342](https://doi.org/10.37921/862772dbrrej) from the Chan Zuckerberg Initiative (CZI) DAF,
-an advised fund of Silicon Valley Community Foundation (CZI grant DOI: 10.37921/862772dbrrej; funder DOI 10.13039/100014989).
+  </Fragment>
+  <div className="impact-stats">
+    <div>
 
-QIIME 2's documentation is (mostly) built with MyST Markdown, which is supported in part with [funding](https://sloan.org/grant-detail/6620) from the Alfred P. Sloan Foundation.
+[**65K+**](https://scholar.google.com/scholar?hl=en&as_sdt=805&sciodt=0,3&cites=6935821321202015575,17795719731389093288,9078996940723452772,6129633569390757233,261340794755367594,16903127068530972426&scipsc=&q=&scisbd=1_)
+
+Citations
+
+    </div>
+    <div>
+
+[**8K+**](https://forum.qiime2.org)
+
+Forum users
+
+    </div>
+    <div>
+
+[**2K+**](https://www.lens.org/lens/search/patent/list?q=qiime%20OR%20qiime2&p=0&n=10&s=_score&d=%2B&f=false&e=false&l=en&authorField=author&dateFilterField=publishedDate&orderBy=%2B_score&presentation=false&preview=true&stemmed=true&useAuthorId=false)
+
+Patent applications
+
+    </div>
+    <div>
+
+[**70+**](https://clinicaltrials.gov/search?term=qiime%20OR%20qiime2)
+
+Clinical trials
+
+    </div>
+  </div>
+  <div className="impact-source">
+  </div>
+  <div className="impact-grid">
+    <div className="editorial-copy">
+
+### Built through scientific collaboration.
+
+QIIME 2 is funded in part by NIH National Cancer Institute Informatics Technology for Cancer Research grant [1U24CA248454-01](https://reporter.nih.gov/project-details/9951750), and by grant [DAF2019-207342](https://doi.org/10.37921/862772dbrrej) from the Chan Zuckerberg Initiative (CZI) DAF, an advised fund of Silicon Valley Community Foundation (CZI grant DOI: 10.37921/862772dbrrej; funder DOI: [10.13039/100014989](https://doi.org/10.13039/100014989)).
+
+Rachis and QIIME 2 also receive support from the Swiss National Science Foundation (SNSF) through grant [10008221](https://data.snf.ch/grants/grant/10008221).
+
+QIIME 2's documentation is mostly built with MyST Markdown, which is supported in part with [funding](https://sloan.org/grant-detail/6620) from the Alfred P. Sloan Foundation.
 
 Initial support for the development of QIIME 2 was provided through a [grant](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1565100) from the National Science Foundation.
 
-</Text>
+Read the [QIIME 2 paper](https://doi.org/10.1038/s41587-019-0209-9) and the [MOSHPIT paper](https://www.cell.com/cell-genomics/fulltext/S2666-979X(26)00228-4) for the work built on this foundation.
 
+    </div>
+    <div className="editorial-copy">
 
+### Help shape what comes next.
 
-<BlogLatestPosts id="/news" title="Announcements & News">
-  <Fragment slot="bg">
-    <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-  </Fragment>
-</BlogLatestPosts>
+Contribute a plugin, improve the documentation, or help maintain the framework. Institutions and research teams can take part in the same community that develops and supports the software.
+
+[Find ways to contribute](https://github.com/qiime2/.github/blob/main/CONTRIBUTING.md) or [start a conversation with the community](https://forum.qiime2.org).
+
+    </div>
+
+  </div>
+</Section>

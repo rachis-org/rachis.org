@@ -1,78 +1,211 @@
-<header class="header bg-[#1a414c] dark:bg-transparent dark:border-b dark:border-gray-500/20">
-  <div class="contents max-width">
-    <nav class="title">
-      <a href="https://qiime2.org"><h2>QIIME 2</h2></a>
+---
+import { networkSites, networkUtilityLinks } from '~/navigation';
+
+interface Props {
+  currentSite?: (typeof networkSites)[number]['id'];
+}
+const { currentSite = 'rachis' } = Astro.props;
+const root = networkSites[0];
+const current = networkSites.find(({ id }) => id === currentSite) ?? root;
+---
+
+<div class="network-bar">
+  <div class="network-inner max-width">
+    <nav class:list={['network-navigation', { 'root-mode': current.id === root.id }]} aria-label="Rachis network">
+      {
+        current.id === root.id ? (
+          <ul class="network-list">
+            {networkSites.map(({ id, text, href }) => (
+              <li>
+                <a href={href} aria-current={id === current.id ? 'page' : undefined}>
+                  {text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="network-trail">
+            <a href={root.href}>{root.text}</a>
+            <span aria-hidden="true">›</span>
+            <details class="network-switcher">
+              <summary>
+                {current.text}
+                <span aria-hidden="true">⌄</span>
+              </summary>
+              <ul class="network-menu">
+                {networkSites
+                  .filter(({ id }) => id !== root.id)
+                  .map(({ id, text, href }) => (
+                    <li>
+                      <a href={href} aria-current={id === current.id ? 'page' : undefined}>
+                        {text}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </details>
+          </div>
+        )
+      }
     </nav>
-    <nav class="links">
+    <nav class="network-utilities" aria-label="Network utilities">
       <ul>
-          <li><a href="https://library.qiime2.org">Library</a></li>
-          <li><a href="https://view.qiime2.org">View</a></li>
-          <li><a href="https://forum.qiime2.org">Forum</a></li>
+        {
+          networkUtilityLinks.map(({ text, href }) => (
+            <li>
+              <a href={href}>{text}</a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
   </div>
-</header>
+</div>
 
-<style lang="postcss">
-  .header {
+<style>
+  .network-bar {
+    position: relative;
+    z-index: 50;
+    background: #1a414c;
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
     font-weight: bold;
-    font-size: initial;
-    width: 100%;
-    line-height: 1.25em;
-    margin-bottom: 0;
-    overflow: hidden;
     letter-spacing: normal;
     height: 30px;
   }
-
-  h2 {
-    font-size: 18px;
-    line-height: 1.75em;
+  .network-inner {
+    box-sizing: border-box;
+    height: 100%;
+    /* Original .67em container padding, plus .3em left and .2em right nav insets. */
+    padding: 0 0.87em 0 0.97em;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
   }
-
-  .contents {
+  .network-navigation {
+    min-width: 0;
+  }
+  .network-navigation,
+  .network-utilities {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .network-navigation.root-mode {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .network-navigation.root-mode::-webkit-scrollbar {
+    display: none;
+  }
+  .network-utilities {
+    flex-shrink: 0;
+    margin-left: auto;
+    color: white;
+  }
+  .network-utilities ul {
     display: flex;
     align-items: center;
-    box-sizing: border-box;
-    position: relative;
-    padding: 0 0.67em;
+    gap: 2em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
-
-  .title {
-    margin-right: 2em;
-    margin-left: .3em;
+  .network-list a,
+  .network-trail > a,
+  .network-utilities a,
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+    white-space: nowrap;
   }
-
-  .links {
-    overflow: hidden;
-    margin-left: auto;
-    padding-right: .2em;
+  .network-list,
+  .network-trail {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
-
+  .network-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .network-list li + li {
+    padding-left: 1rem;
+  }
   a {
-    color: white;
     text-decoration: none;
   }
-
-  a:hover, a:active {
+  a:hover,
+  a:focus-visible {
     text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
-
-  ul {
-    font-size: 14px;
-    gap: 2em;
-    margin: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    min-height: 30px;
+  a[aria-current] {
+    color: white;
+    font-weight: 700;
   }
-
-  ul > li {
+  .network-switcher {
+    position: relative;
+  }
+  summary {
     display: flex;
+    gap: 0.75rem;
     align-items: center;
-    font-size: 14px;
+    cursor: pointer;
+    list-style: none;
+    color: white;
+    font-weight: 700;
   }
-
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .network-menu {
+    position: absolute;
+    top: 100%;
+    left: -0.8rem;
+    min-width: 10rem;
+    padding: 0.5rem;
+    border: 1px solid #73909b;
+    border-radius: 0.4rem;
+    background: #1a414c;
+    list-style: none;
+    box-shadow: 0 8px 20px #0002;
+  }
+  .network-menu a {
+    display: block;
+    padding: 0.5rem;
+  }
+  @media (max-width: 640px) {
+    .network-inner {
+      gap: 0.5rem;
+    }
+    .network-list,
+    .network-trail {
+      gap: 0.5rem;
+    }
+    .network-list li + li {
+      padding-left: 0.5rem;
+    }
+    .network-utilities ul {
+      gap: 0.75rem;
+    }
+  }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('.network-switcher').forEach((switcher) => {
+    switcher.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        switcher.open = false;
+        switcher.querySelector('summary')?.focus();
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !switcher.contains(event.target)) switcher.open = false;
+    });
+  });
+</script>

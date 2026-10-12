@@ -21,7 +21,7 @@ let title: string | undefined = undefined;
 if (meta?.title) {
   title = meta.title;
 } else if (front?.title) {
-  title = front.title
+  title = front.title;
 }
 
 const metadata: MetaData = { title };
@@ -29,10 +29,10 @@ const metadata: MetaData = { title };
 
 <Layout metadata={metadata}>
   <slot name="announcement">
-    <NavBanner/>
+    <NavBanner />
   </slot>
   <slot name="header">
-    <Header {...headerData} socialLinks={footerData.socialLinks} isSticky showRssFeed showToggleTheme />
+    <Header {...headerData} socialLinks={footerData.socialLinks} isSticky showToggleTheme position="right" />
   </slot>
   <main class="2xl:font-[20px]">
     <slot />
