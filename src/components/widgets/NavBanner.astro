@@ -74,6 +74,10 @@ const current = networkSites.find(({ id }) => id === currentSite) ?? root;
     letter-spacing: normal;
     height: 30px;
   }
+  :global(.dark) .network-bar {
+    background: transparent;
+    border-bottom: 1px solid rgb(107 114 128 / 20%);
+  }
   .network-inner {
     box-sizing: border-box;
     height: 100%;
@@ -178,6 +182,10 @@ const current = networkSites.find(({ id }) => id === currentSite) ?? root;
   .network-menu a {
     display: block;
     padding: 0.5rem;
+  }
+  :global(.dark) .network-menu {
+    background: var(--rachis-bg-card);
+    border-color: var(--rachis-border);
   }
   @media (max-width: 640px) {
     .network-inner {

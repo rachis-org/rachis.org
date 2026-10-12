@@ -34,7 +34,7 @@ const rows = [plugins.slice(0, 4), plugins.slice(4, 8), plugins.slice(8, 12)];
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    opacity: 0.55;
+    opacity: var(--rachis-plugin-opacity);
     transform: rotate(0deg) scale(1.15);
   }
   .plugin-row {
@@ -60,23 +60,23 @@ const rows = [plugins.slice(0, 4), plugins.slice(4, 8), plugins.slice(8, 12)];
     justify-content: center;
     width: 17rem;
     height: 6rem;
-    border: 1px solid var(--rachis-border);
+    border: 1px solid var(--rachis-plugin-border);
     border-radius: 0.8rem;
-    background: var(--rachis-bg-card);
+    background: var(--rachis-plugin-background);
     padding: 1rem;
   }
   .plugin-tile strong {
     font-family: monospace;
     font-size: 1rem;
     font-weight: 500;
-    color: var(--aw-color-primary);
+    color: var(--rachis-plugin-heading);
   }
   .plugin-tile > span:last-child {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    color: var(--aw-color-text-muted);
+    color: var(--rachis-plugin-text);
     font-size: 0.75rem;
     line-height: 1.4;
     margin-top: 0.25rem;
