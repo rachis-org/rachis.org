@@ -1,0 +1,65 @@
+---
+import type { GallerySlide } from '~/utils/visualization-gallery';
+
+interface Props {
+  slide: GallerySlide;
+  index: number;
+  label: string;
+  openLabel: string;
+}
+const { slide, index, label, openLabel } = Astro.props;
+---
+
+<a
+  href={slide.viewUrl}
+  target="_blank"
+  rel="noopener"
+  class="gallery-thumbnail"
+  data-gallery-index={index}
+  data-gallery-select-label={`${label} ${slide.title}`}
+  data-gallery-open-label={`${openLabel} ${slide.title}`}
+  aria-label={`${openLabel} ${slide.title}`}
+  title={slide.title}
+>
+  <img src={slide.thumbnail} alt="" width="350" height="240" loading="lazy" decoding="async" />
+</a>
+
+<style>
+  .gallery-thumbnail {
+    width: max-content;
+    align-self: center;
+    overflow: hidden;
+    text-align: left;
+    border: 1px solid var(--rachis-border);
+    border-radius: 0.65rem;
+    background: var(--rachis-bg-card);
+    transition: border-color 0.15s;
+  }
+  .gallery-thumbnail:hover {
+    border-color: var(--aw-color-primary);
+  }
+  img {
+    display: block;
+    width: 350px;
+    height: 240px;
+    max-width: none;
+    object-fit: contain;
+    background: white;
+  }
+  .gallery-thumbnail:focus-visible {
+    outline: 2px solid var(--aw-color-accent);
+    outline-offset: 3px;
+  }
+  @media (max-width: 767px) {
+    .gallery-thumbnail {
+      width: 100%;
+      max-width: 352px;
+      justify-self: center;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 35 / 24;
+    }
+  }
+</style>

@@ -31,7 +31,7 @@ const { id, label, number, variant = 'plain' } = Astro.props;
 <style>
   .rachis-card {
     min-width: 0;
-    scroll-margin-top: 6rem;
+    scroll-margin-top: var(--rachis-anchor-offset);
     padding: 2rem;
     border: 1px solid var(--rachis-border);
     border-radius: 1rem;
@@ -58,7 +58,7 @@ const { id, label, number, variant = 'plain' } = Astro.props;
   .card-copy {
     color: var(--aw-color-text-muted);
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: 1.6;
   }
   .card-copy :global(p) {
     margin: 0 0 1rem;

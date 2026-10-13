@@ -82,12 +82,13 @@ export const plugins = [
 <Hero plugins={plugins} eyebrow="A shared foundation for scientific software">
   <Fragment slot="title">
 
-# Bring your methods and create connected, traceable, and reusable results.
+# Bring **your methods** and create reusable, reviewable, and **reproducible results**.
 
   </Fragment>
   <Fragment slot="subtitle">
 
-Rachis is the open-source framework behind QIIME 2 and MOSHPIT. Build scientific plugins and distributions with automatic provenance, typed data, and automatically generated interfaces.
+Rachis is the open-source framework behind QIIME 2 and MOSHPIT.
+Build scientific plugins and distributions that provide multiple user interfaces, semantic type checking, and provenance recording.
 
   </Fragment>
   <Fragment slot="actions">
@@ -99,7 +100,8 @@ Rachis is the open-source framework behind QIIME 2 and MOSHPIT. Build scientific
   </Fragment>
   <Fragment slot="transition">
 
-Rachis is the new name for the QIIME 2 framework. QIIME 2 continues as a scientific distribution built on Rachis. Learn more [here](https://news.rachis.org/en/latest/2025-10-23-q2f-transition/).
+Rachis is the new name for the QIIME 2 framework. \
+QIIME 2 continues as a scientific distribution built on Rachis. Learn more [here](https://news.rachis.org/en/latest/2025-10-23-q2f-transition/).
 
   </Fragment>
 </Hero>
@@ -129,7 +131,7 @@ Add methods, visualizations, and pipelines. Register their inputs, outputs, and 
 
 ### Interfaces reach your users.
 
-The same actions are available through command-line, programmatic, and Galaxy interfaces. Users can work with your plugin through the interface that fits their workflow.
+The same actions are available through command-line, Python, and graphical interfaces. Users can work with your plugin through the interface that fits their workflow.
 
     </div>
   </div>
@@ -208,6 +210,7 @@ An analysis embeds many local decisions on tooling, parameters, and even softwar
               <ul>
                 <li><span>VERSION</span></li>
                 <li><span>checksums.sha512</span></li>
+                <li><strong>metadata.yaml</strong></li>
                 <li>
                   <details open>
                     <summary><strong>data/</strong></summary>
@@ -216,7 +219,6 @@ An analysis embeds many local decisions on tooling, parameters, and even softwar
                     </ul>
                   </details>
                 </li>
-                <li><strong>metadata.yaml</strong></li>
                 <li>
                   <details open>
                     <summary><strong>provenance/</strong></summary>
@@ -231,11 +233,11 @@ An analysis embeds many local decisions on tooling, parameters, and even softwar
                         </details>
                       </li>
                       <li>
-                        <details>
+                        <details open>
                           <summary><strong>artifacts/</strong></summary>
                           <ul>
                             <li>
-                              <details open>
+                              <details>
                                 <summary><span>1a4485df-2031-4e98-aecf-193ee8497f80/</span></summary>
                                 <ul>
                                   <li><span>VERSION</span></li>
@@ -253,7 +255,7 @@ An analysis embeds many local decisions on tooling, parameters, and even softwar
                               </details>
                             </li>
                             <li>
-                              <details open>
+                              <details>
                                 <summary><span>d27a741c-f7e9-48af-ad8a-a479bd89ec9e/</span></summary>
                                 <ul>
                                   <li><span>VERSION</span></li>
@@ -277,6 +279,23 @@ An analysis embeds many local decisions on tooling, parameters, and even softwar
                       <li><span>conda-env.yaml</span></li>
                       <li><span>metadata.yaml</span></li>
                     </ul>
+                  </details>
+                </li>
+                <li>
+                  <details open>
+                    <summary><strong>annotations/</strong></summary>
+                      <ul>
+                        <li> 
+                          <details open>
+                            <summary><span>ab1afd53-a2c6-433c-8418-97a666e6aed2</span></summary>
+                            <ul>
+                              <li><span>checksums.sha512</span></li>
+                              <li><span>metadata.yaml</span></li>
+                              <li><span>signature.gpg</span></li>
+                            </ul>
+                          </details>
+                        </li>
+                      </ul>
                   </details>
                 </li>
               </ul>
@@ -324,18 +343,35 @@ Give your users a way to explore their results. Plugins can create interactive v
 
   </Fragment>
   <Visualization
-    src="https://view.qiime2.org/visualization/?src=https://raw.githubusercontent.com/qiime2/q2-fmt/master/demo/raincloud-baseline0.qzv"
-    title="Interactive raincloud plots in QIIME 2 View"
+    slot="fullwidth"
+    label="Interactive visualization gallery"
+    previousLabel="Previous visualization"
+    nextLabel="Next visualization"
+    selectLabel="Show visualization:"
+    mobileOpenLabel="Open visualization in a new tab:"
+    openLabel="Open this example in QIIME 2 View →"
+    attributionLabel="Created with"
+    initialId="AlphaDiversityRaincloud"
+    attributions={{
+      AlphaDiversityRaincloud: {
+        text: 'q2-fmt',
+        href: 'https://library.qiime2.org/plugins/qiime2/q2-fmt/overview',
+      },
+    }}
   >
     <Fragment slot="hint">
 
-On smaller screens, scroll across the viewer to reach the plot controls.
+Scroll across the viewer if the plot controls extend beyond the viewport.
 
     </Fragment>
 
-Raincloud plots created with [q2-fmt](https://library.qiime2.org/plugins/qiime2/q2-fmt/overview). Try the plot controls, or select **Provenance** to explore how this result was created.
+    <Fragment slot="mobile-instructions">
 
-[Open this example in QIIME 2 View →](https://view.qiime2.org/visualization/?src=https://raw.githubusercontent.com/qiime2/q2-fmt/master/demo/raincloud-baseline0.qzv)
+Use the arrows to browse examples. Tap the thumbnail to open its visualization in a new tab in QIIME 2 View, where you can explore the plot controls and **Provenance**.
+
+    </Fragment>
+
+Choose a thumbnail or use the arrows to explore another example. Try the plot controls, or select **Provenance** to explore how a result was created.
 
   </Visualization>
 </Section>
@@ -385,7 +421,7 @@ Choose compatible plugins, add your own, and provide documentation and workflows
 
       <Fragment slot="actions">
 
-[Explore distribution development →](https://github.com/qiime2/distributions)
+[Build on the 'tiny' distro →](https://develop.qiime2.org/en/stable/plugins/how-to-guides/facilitate-installation.html#installing-your-plugin-using-the-tiny-distribution-and-any-custom-required-plugins)
 
       </Fragment>
     </Card>
@@ -448,7 +484,7 @@ Clinical trials
 
 QIIME 2 is funded in part by NIH National Cancer Institute Informatics Technology for Cancer Research grant [1U24CA248454-01](https://reporter.nih.gov/project-details/9951750), and by grant [DAF2019-207342](https://doi.org/10.37921/862772dbrrej) from the Chan Zuckerberg Initiative (CZI) DAF, an advised fund of Silicon Valley Community Foundation (CZI grant DOI: 10.37921/862772dbrrej; funder DOI: [10.13039/100014989](https://doi.org/10.13039/100014989)).
 
-Rachis and QIIME 2 also receive support from the Swiss National Science Foundation (SNSF) through grant [10008221](https://data.snf.ch/grants/grant/10008221).
+Rachis and MOSHPIT also receive support from the Swiss National Science Foundation (SNSF) through grant [10008221](https://data.snf.ch/grants/grant/10008221).
 
 QIIME 2's documentation is mostly built with MyST Markdown, which is supported in part with [funding](https://sloan.org/grant-detail/6620) from the Alfred P. Sloan Foundation.
 

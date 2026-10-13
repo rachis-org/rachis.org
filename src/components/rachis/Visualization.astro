@@ -1,35 +1,259 @@
 ---
+import { getCollection } from 'astro:content';
+import GalleryThumbnail from './GalleryThumbnail.astro';
+import type { GallerySlide } from '~/utils/visualization-gallery';
+
 interface Props {
-  src: string;
-  title: string;
+  label: string;
+  previousLabel: string;
+  nextLabel: string;
+  selectLabel: string;
+  mobileOpenLabel: string;
+  openLabel: string;
+  attributionLabel: string;
+  initialId?: string;
+  attributions?: Record<string, { text: string; href: string }>;
 }
 
-const { src, title } = Astro.props;
+const {
+  label,
+  previousLabel,
+  nextLabel,
+  selectLabel,
+  mobileOpenLabel,
+  openLabel,
+  attributionLabel,
+  initialId,
+  attributions = {},
+} = Astro.props;
+const entries = (await getCollection('gallery')).sort((a, b) => a.data.order - b.data.order);
+const slides: GallerySlide[] = entries.map(({ id, data }) => ({
+  id,
+  title: data.title,
+  desc: data.desc,
+  href: data.href,
+  thumbnail: data.thumbnail,
+  viewUrl: `https://view.qiime2.org/visualization/?${new URLSearchParams({ src: data.href })}`,
+  attribution: attributions[id],
+}));
+if (!slides.length) throw new Error('The visualization gallery must contain at least one entry');
+const initialIndex = Math.max(
+  0,
+  slides.findIndex(({ id }) => id === initialId)
+);
+const initial = slides[initialIndex];
+// Images already live in the thumbnail markup; avoid repeating their data URIs in JSON.
+const serializedSlides = JSON.stringify(
+  slides.map(({ title, desc, viewUrl, attribution }) => ({ title, desc, viewUrl, attribution }))
+).replace(/</g, '\\u003c');
 ---
 
 <figure class="visualization-demo">
-  <div class="scroll-hint"><slot name="hint" /></div>
-  <div class="viewer-frame" role="region" aria-label={title} tabindex="0">
-    <iframe src={src} title={title} loading="lazy" allowfullscreen></iframe>
-  </div>
-  <figcaption><slot /></figcaption>
+  <visualization-carousel data-active-index={initialIndex} role="region" aria-label={label}>
+    <div class="carousel-stage">
+      <div class="thumbnail-grid" data-gallery-left></div>
+      <div class="carousel-main">
+        <div class="scroll-hint"><slot name="hint" /></div>
+        <div
+          id="gallery-viewer"
+          class="viewer-frame"
+          data-gallery-viewer
+          role="region"
+          aria-labelledby="gallery-current-title"
+          tabindex="0"
+        >
+        </div>
+        <div class="carousel-controls">
+          <button
+            type="button"
+            data-gallery-direction="-1"
+            aria-label={previousLabel}
+            aria-controls="gallery-viewer"
+            disabled={slides.length < 2}><span aria-hidden="true">←</span></button
+          >
+          <div class="carousel-current" role="status" aria-live="polite" aria-atomic="true">
+            <h3 id="gallery-current-title" data-gallery-title tabindex="-1">{initial.title}</h3>
+            <span data-gallery-count>{initialIndex + 1} / {slides.length}</span>
+          </div>
+          <button
+            type="button"
+            data-gallery-direction="1"
+            aria-label={nextLabel}
+            aria-controls="gallery-viewer"
+            disabled={slides.length < 2}><span aria-hidden="true">→</span></button
+          >
+        </div>
+        <div class="gallery-details">
+          <p data-gallery-description>{initial.desc}</p>
+          <p data-gallery-credit hidden={!initial.attribution}>
+            {attributionLabel}
+            <a href={initial.attribution?.href}>{initial.attribution?.text}</a>.
+          </p>
+          <a data-gallery-open href={initial.viewUrl}>{openLabel}</a>
+        </div>
+      </div>
+      <div class="thumbnail-grid" data-gallery-right></div>
+      <div class="mobile-gallery">
+        <div class="mobile-instructions"><slot name="mobile-instructions" /></div>
+        <div id="gallery-mobile" class="mobile-thumbnails" data-gallery-mobile>
+          {
+            slides.map((slide, index) => (
+              <GalleryThumbnail slide={slide} index={index} label={selectLabel} openLabel={mobileOpenLabel} />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+    <template data-gallery-frame>
+      <iframe title={initial.title} loading="lazy" allowfullscreen></iframe>
+    </template>
+    <script is:inline type="application/json" data-gallery-items set:html={serializedSlides} />
+  </visualization-carousel>
+  <figcaption class="desktop-instructions"><slot /></figcaption>
 </figure>
+
+<script>
+  import './visualization-carousel';
+</script>
 
 <style>
   .visualization-demo {
+    width: 100%;
+    overflow: clip;
     margin: 0;
   }
-  .scroll-hint {
+  visualization-carousel {
+    display: block;
+  }
+  .carousel-stage {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr) min(var(--section-content-width), calc(100% - 2 * var(--section-gutter)))
+      minmax(0, 1fr);
+    column-gap: 1rem;
+    align-items: start;
+  }
+  .carousel-main {
+    display: contents;
+  }
+  visualization-carousel:not([data-mode='desktop']) .carousel-main,
+  visualization-carousel:not([data-mode='desktop']) .thumbnail-grid {
     display: none;
-    margin-bottom: 1rem;
+  }
+  visualization-carousel[data-mode='mobile'] .carousel-main {
+    display: contents;
+  }
+  visualization-carousel[data-mode='mobile'] .viewer-frame,
+  visualization-carousel[data-mode='mobile'] .scroll-hint,
+  visualization-carousel[data-mode='mobile'] .gallery-details {
+    display: none;
+  }
+  .mobile-gallery {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+  }
+  .mobile-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: 1rem;
+    scroll-margin-top: var(--rachis-anchor-offset);
+  }
+  visualization-carousel[data-mode='desktop'] .mobile-gallery {
+    display: none;
+  }
+  visualization-carousel:not([data-mode='desktop']) ~ .desktop-instructions {
+    display: none;
+  }
+  .mobile-instructions {
+    margin-bottom: 1.25rem;
     font-size: 0.9rem;
-    line-height: 1.7;
+    line-height: 1.5;
+    color: var(--aw-color-text-muted);
+  }
+  .mobile-instructions :global(p) {
+    margin: 0;
+  }
+  .carousel-main > * {
+    grid-column: 2;
+    min-width: 0;
+  }
+  .thumbnail-grid {
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 1rem;
+    width: max-content;
+    align-self: center;
+    max-height: 780px;
+    overflow-y: auto;
+    padding: 0.4rem;
+  }
+  [data-gallery-left] {
+    grid-column: 1;
+    justify-self: end;
+    justify-items: end;
+  }
+  [data-gallery-right] {
+    grid-column: 3;
+    justify-self: start;
+  }
+  .carousel-controls {
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .carousel-controls button {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--rachis-border);
+    border-radius: 50%;
+    background: var(--rachis-bg-card);
+    color: var(--aw-color-primary);
+    font-size: 1.5rem;
+  }
+  .carousel-controls button:hover {
+    border-color: var(--aw-color-primary);
+  }
+  .carousel-controls button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .carousel-current {
+    min-width: 0;
+    text-align: center;
+  }
+  .carousel-current h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.125rem;
+    font-weight: 650;
+    line-height: 1.35;
+    scroll-margin-top: var(--rachis-anchor-offset);
+  }
+  .carousel-current > span {
+    font-size: 0.8rem;
+    color: var(--aw-color-text-muted);
+  }
+  .scroll-hint {
+    grid-row: 1;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
     color: var(--aw-color-text-muted);
   }
   .scroll-hint :global(p) {
     margin: 0;
   }
   .viewer-frame {
+    grid-row: 2;
+    scroll-margin-top: var(--rachis-anchor-offset);
     overflow: auto;
     border: 1px solid var(--rachis-border);
     border-radius: 1rem;
@@ -38,36 +262,44 @@ const { src, title } = Astro.props;
   iframe {
     display: block;
     width: 100%;
-    /* Keep the plot and its controls usable; smaller screens can scroll across. */
-    min-width: 1100px;
+    /* Narrow viewers can scroll without cutting off a visualization's controls. */
+    min-width: 700px;
     height: 780px;
     border: 0;
   }
-  .viewer-frame:focus-visible {
+  .viewer-frame:focus-visible,
+  .carousel-current h3:focus-visible {
     outline: 2px solid var(--aw-color-accent);
     outline-offset: 5px;
   }
-  figcaption {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.75rem 2rem;
-    margin-top: 1.25rem;
+  .gallery-details {
+    grid-row: 4;
     font-size: 0.9rem;
-    line-height: 1.7;
+    line-height: 1.5;
     color: var(--aw-color-text-muted);
   }
-  figcaption :global(p) {
-    margin: 0;
+  .gallery-details p {
+    margin: 0 0 0.75rem;
   }
+  .gallery-details a,
   figcaption :global(a) {
     color: var(--aw-color-primary);
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }
-  @media (max-width: 1148px) {
+  figcaption {
+    width: min(var(--section-content-width), calc(100% - 2 * var(--section-gutter)));
+    margin: 1.25rem auto 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--aw-color-text-muted);
+  }
+  figcaption :global(p) {
+    margin: 0;
+  }
+  @media (min-width: 1208px) {
     .scroll-hint {
-      display: block;
+      display: none;
     }
   }
 </style>

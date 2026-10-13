@@ -31,6 +31,9 @@ const { plugins, eyebrow } = Astro.props;
     position: absolute;
     inset: 0;
     background: var(--rachis-hero-overlay);
+    background-size: clamp(100%, 2200px, 220%) 100%;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .hero-inner {
     position: relative;
@@ -46,11 +49,15 @@ const { plugins, eyebrow } = Astro.props;
     margin: 1.5rem 0;
     text-wrap: balance;
   }
+  .hero-title :global(h1 strong) {
+    color: var(--aw-color-primary);
+    font-weight: inherit;
+  }
   .hero-copy {
     max-width: 770px;
     margin: 0 auto;
     font-size: 1.2rem;
-    line-height: 1.85;
+    line-height: 1.6;
     color: var(--aw-color-text-muted);
   }
   .hero-copy :global(p) {
@@ -91,7 +98,7 @@ const { plugins, eyebrow } = Astro.props;
   }
   .hero-transition {
     font-size: 0.8rem;
-    line-height: 1.7;
+    line-height: 1.5;
     color: var(--aw-color-text-muted);
     max-width: 640px;
     margin: 2.5rem auto 0;

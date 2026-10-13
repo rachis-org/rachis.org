@@ -129,6 +129,9 @@
 }
 
 /* MDX supplies editorial content; Astro supplies the section and card shells. */
+:root {
+  --rachis-anchor-offset: 4.25rem;
+}
 .eyebrow {
   color: var(--aw-color-primary);
   font-size: 0.75rem;
@@ -160,7 +163,7 @@
 .section-footnote {
   margin-top: 2rem;
   font-size: 0.9rem;
-  line-height: 1.8;
+  line-height: 1.5;
   color: var(--aw-color-text-muted);
 }
 .section-footnote a,
@@ -180,7 +183,7 @@
   gap: 2.5rem;
 }
 .architecture-grid .editorial-copy {
-  line-height: 1.7;
+  line-height: 1.6;
 }
 .architecture-grid .editorial-copy p {
   margin-bottom: 0;
@@ -220,7 +223,7 @@
   margin: 1rem 0 3rem;
   color: var(--aw-color-text-muted);
   font-size: 0.85rem;
-  line-height: 1.7;
+  line-height: 1.5;
 }
 .impact-source p {
   margin: 0;
@@ -231,7 +234,7 @@
   text-underline-offset: 0.2em;
 }
 .editorial-copy {
-  line-height: 1.85;
+  line-height: 1.6;
   color: var(--aw-color-text-muted);
 }
 .editorial-copy h3 {

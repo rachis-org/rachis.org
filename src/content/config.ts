@@ -1,6 +1,7 @@
 import { z, defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { APP_BLOG, SITE } from 'astrowind:config';
+import { galleryCollection } from './gallery';
 
 const distroCollection = defineCollection({
   loader: async () => {
@@ -134,6 +135,7 @@ const postCollection = defineCollection({
 });
 
 export const collections = {
+  gallery: galleryCollection,
   post: postCollection,
   distros: distroCollection,
 };

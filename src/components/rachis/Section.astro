@@ -23,32 +23,54 @@ const { id, eyebrow, tone = 'plain', compact = false } = Astro.props;
     </header>
     <slot />
   </div>
+  {
+    Astro.slots.has('fullwidth') && (
+      <div class="section-fullwidth">
+        <slot name="fullwidth" />
+      </div>
+    )
+  }
 </section>
 
 <style>
   .rachis-section {
-    padding: 6rem 1.5rem;
-    scroll-margin-top: 6rem;
+    --section-space: 3rem;
+    --section-inset: var(--section-space);
+    --section-gutter: 1.5rem;
+    --section-content-width: 1160px;
+    display: flow-root;
+    padding: var(--section-inset) var(--section-gutter);
+    /* Account for internal padding so every anchor's heading clears the header. */
+    scroll-margin-top: calc(var(--rachis-anchor-offset) - var(--section-inset));
+  }
+  .tone-plain {
+    --section-space: 5rem;
+    --section-inset: 0rem;
+    /* Adjacent plain sections share one gap rather than adding two paddings. */
+    margin-block: var(--section-space);
   }
   .section-inner {
-    max-width: 1160px;
+    max-width: var(--section-content-width);
     margin: auto;
+  }
+  .section-fullwidth {
+    margin-inline: calc(-1 * var(--section-gutter));
   }
   .section-heading {
     max-width: 760px;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
   .section-title :global(h2) {
-    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
     line-height: 1.16;
     font-weight: 650;
     letter-spacing: -0.045em;
-    margin: 0.75rem 0 1.25rem;
+    margin: 0.5rem 0 1rem;
   }
   .section-intro {
     color: var(--aw-color-text-muted);
     font-size: 1.125rem;
-    line-height: 1.8;
+    line-height: 1.6;
   }
   .section-intro :global(p) {
     margin: 0;
@@ -57,13 +79,12 @@ const { id, eyebrow, tone = 'plain', compact = false } = Astro.props;
     background: var(--rachis-bg-soft);
   }
   .compact {
-    padding-block: 3rem;
+    --section-space: 2rem;
   }
   .compact .section-heading {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
   .compact .section-title :global(h2) {
-    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
     margin-bottom: 0;
   }
   .tone-dark {
@@ -78,10 +99,11 @@ const { id, eyebrow, tone = 'plain', compact = false } = Astro.props;
   }
   @media (max-width: 640px) {
     .rachis-section {
-      padding: 4rem 1.25rem;
+      --section-space: 2rem;
+      --section-gutter: 1.25rem;
     }
     .rachis-section.compact {
-      padding-block: 3rem;
+      --section-space: 1.75rem;
     }
   }
 </style>
