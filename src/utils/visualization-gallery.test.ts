@@ -8,8 +8,8 @@ test('catalog navigation wraps in either direction', () => {
   assert.equal(wrapIndex(19, 9), 1);
 });
 
-test('each gallery selection shows every other entry exactly once, in circular order', () => {
-  for (const count of [1, 2, 9, 13]) {
+test('each gallery selection shows every other entry once with adjacent neighbors beside the viewer', () => {
+  for (const count of [1, 2, 3, 8, 9, 10, 13, 25]) {
     for (let active = 0; active < count; active++) {
       const { left, right } = thumbnailGroups(active, count);
       const neighbors = [...left, ...right];
@@ -17,15 +17,42 @@ test('each gallery selection shows every other entry exactly once, in circular o
       assert.equal(new Set(neighbors).size, count - 1);
       assert.ok(!neighbors.includes(active));
       assert.ok(Math.abs(left.length - right.length) <= 1);
-      const ring = [...left, active, ...right];
-      for (let index = 1; index < ring.length; index++) {
-        assert.equal(ring[index], (ring[index - 1] + 1) % count);
-      }
+      if (left.length) assert.equal(left[Math.ceil(left.length / 2) - 1], wrapIndex(active - 1, count));
+      if (right.length) assert.equal(right[0], wrapIndex(active + 1, count));
     }
   }
 });
 
-test('next moves the former active entry into the previous thumbnails', () => {
-  assert.deepEqual(thumbnailGroups(0, 9), { left: [5, 6, 7, 8], right: [1, 2, 3, 4] });
-  assert.deepEqual(thumbnailGroups(1, 9), { left: [6, 7, 8, 0], right: [2, 3, 4, 5] });
+test('larger catalogs extend two rows outward while preserving the clockwise order', () => {
+  for (const count of [10, 11, 12, 13, 25]) {
+    for (let active = 0; active < count; active++) {
+      const { left, right } = thumbnailGroups(active, count);
+      const leftColumns = Math.ceil(left.length / 2);
+      const rightColumns = Math.ceil(right.length / 2);
+      const clockwise = [
+        active,
+        ...right.slice(0, rightColumns),
+        ...right.slice(rightColumns).reverse(),
+        ...left.slice(leftColumns).reverse(),
+        ...left.slice(0, leftColumns),
+      ];
+      assert.deepEqual(
+        clockwise,
+        Array.from({ length: count }, (_, offset) => wrapIndex(active + offset, count))
+      );
+    }
+  }
+});
+
+test('two-by-two rails follow the requested clockwise ring through wraparound', () => {
+  assert.deepEqual(thumbnailGroups(0, 9), { left: [7, 8, 6, 5], right: [1, 2, 4, 3] });
+  assert.deepEqual(thumbnailGroups(1, 9), { left: [8, 0, 7, 6], right: [2, 3, 5, 4] });
+  for (let active = 0; active < 9; active++) {
+    const { left, right } = thumbnailGroups(active, 9);
+    const clockwise = [active, right[0], right[1], right[3], right[2], left[3], left[2], left[0], left[1]];
+    assert.deepEqual(
+      clockwise,
+      Array.from({ length: 9 }, (_, offset) => wrapIndex(active + offset, 9))
+    );
+  }
 });

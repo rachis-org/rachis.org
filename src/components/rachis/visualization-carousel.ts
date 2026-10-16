@@ -1,4 +1,5 @@
 import { thumbnailGroups, wrapIndex, type GallerySlide } from '~/utils/visualization-gallery';
+import { ThumbnailMotion } from './thumbnail-motion';
 
 class VisualizationCarousel extends HTMLElement {
   private cleanup?: AbortController;
@@ -8,7 +9,7 @@ class VisualizationCarousel extends HTMLElement {
     this.cleanup?.abort();
     this.cleanup = new AbortController();
     const { signal } = this.cleanup;
-    const slides: Pick<GallerySlide, 'title' | 'desc' | 'viewUrl' | 'attribution'>[] = JSON.parse(
+    const slides: Pick<GallerySlide, 'title' | 'desc' | 'viewUrl'>[] = JSON.parse(
       this.querySelector('[data-gallery-items]')!.textContent!
     );
     let active = Number(this.dataset.activeIndex);
@@ -19,8 +20,6 @@ class VisualizationCarousel extends HTMLElement {
     const description = this.querySelector<HTMLElement>('[data-gallery-description]')!;
     const count = this.querySelector<HTMLElement>('[data-gallery-count]')!;
     const open = this.querySelector<HTMLAnchorElement>('[data-gallery-open]')!;
-    const credit = this.querySelector<HTMLElement>('[data-gallery-credit]')!;
-    const creditLink = credit.querySelector<HTMLAnchorElement>('a')!;
     const left = this.querySelector<HTMLElement>('[data-gallery-left]')!;
     const right = this.querySelector<HTMLElement>('[data-gallery-right]')!;
     const mobileGrid = this.querySelector<HTMLElement>('[data-gallery-mobile]')!;
@@ -34,6 +33,11 @@ class VisualizationCarousel extends HTMLElement {
       );
     }
     const buttons = this.thumbnails;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const motion = new ThumbnailMotion(this, buttons, reducedMotion);
+    signal.addEventListener('abort', () => motion.dispose(), { once: true });
+    reducedMotion.addEventListener('change', () => motion.cancel(), { signal });
+    window.addEventListener('resize', () => motion.cancel(), { signal });
     // Screen-edge clipping must also keep fully hidden thumbnails out of the tab order.
     const visibility = new IntersectionObserver(
       (entries) => {
@@ -45,9 +49,34 @@ class VisualizationCarousel extends HTMLElement {
     for (const button of buttons.values()) visibility.observe(button);
     signal.addEventListener('abort', () => visibility.disconnect(), { once: true });
 
+    const updateRails = () => {
+      const groups = thumbnailGroups(active, slides.length);
+      for (const [rail, indices] of [
+        [left, groups.left],
+        [right, groups.right],
+      ] as const) {
+        const columns = Math.max(1, Math.ceil(indices.length / 2));
+        rail.style.setProperty('--gallery-columns', String(columns));
+        rail.replaceChildren(
+          ...indices.map((index, position) => {
+            const button = buttons.get(index)!;
+            // An incomplete left row stays against the viewer, with its gap at the outer edge.
+            button.style.setProperty(
+              '--gallery-column',
+              rail === left && indices.length % 2 === 1 && position === columns ? '2' : 'auto'
+            );
+            return button;
+          })
+        );
+      }
+    };
+
     const select = (index: number, focusTitle = false) => {
       const next = wrapIndex(index, slides.length);
       if (next === active) return;
+      const first = motion.capture();
+      const previous = active;
+      const direction = Math.sign(index - active);
       active = next;
       this.dataset.activeIndex = String(active);
       const slide = slides[active];
@@ -55,11 +84,6 @@ class VisualizationCarousel extends HTMLElement {
       description.textContent = slide.desc;
       count.textContent = `${active + 1} / ${slides.length}`;
       open.href = slide.viewUrl;
-      credit.hidden = !slide.attribution;
-      if (slide.attribution) {
-        creditLink.textContent = slide.attribution.text;
-        creditLink.href = slide.attribution.href;
-      }
       if (mobile.matches) {
         mobileGrid.replaceChildren(buttons.get(active)!);
       } else {
@@ -67,17 +91,17 @@ class VisualizationCarousel extends HTMLElement {
         viewer.setAttribute('aria-busy', 'true');
         frame.title = slide.title;
         frame.src = slide.viewUrl;
-        const groups = thumbnailGroups(active, slides.length);
-        left.replaceChildren(...groups.left.map((index) => buttons.get(index)!));
-        right.replaceChildren(...groups.right.map((index) => buttons.get(index)!));
+        updateRails();
       }
       if (focusTitle) {
         title.focus({ preventScroll: true });
         (mobile.matches ? mobileGrid : viewer).scrollIntoView({ block: 'start' });
       }
+      motion.play(first, previous, active, direction, mobile.matches, viewer);
     };
 
     const syncLayout = () => {
+      motion.cancel();
       this.dataset.mode = mobile.matches ? 'mobile' : 'desktop';
       this.setAttribute('aria-roledescription', 'carousel');
       for (const control of this.querySelectorAll('[data-gallery-direction]'))
@@ -102,9 +126,7 @@ class VisualizationCarousel extends HTMLElement {
         mobileGrid.replaceChildren(buttons.get(active)!);
       } else {
         mobileGrid.replaceChildren();
-        const groups = thumbnailGroups(active, slides.length);
-        left.replaceChildren(...groups.left.map((index) => buttons.get(index)!));
-        right.replaceChildren(...groups.right.map((index) => buttons.get(index)!));
+        updateRails();
         viewer.setAttribute('aria-busy', 'true');
         frame.title = slides[active].title;
         viewer.replaceChildren(frame);
