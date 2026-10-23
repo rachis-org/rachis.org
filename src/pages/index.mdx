@@ -140,39 +140,36 @@ The same actions are available through command-line, Python, and graphical inter
 <Section id="why-rachis" eyebrow="What your methods gain">
   <Fragment slot="title">
 
-## Give your methods a shared foundation.
+## Give your methods a shared framework.
 
   </Fragment>
   <div className="rachis-grid grid-four">
     <Card>
       <Fragment slot="title">
 
-### Traceable results
+### Decentralized data provenance
 
       </Fragment>
 
-Share outputs that collaborators can inspect and retrace.
-
+Rachis automatically records the inputs, parameters, software versions, and upstream results behind an analysis. Provenance replay can turn the recorded steps into code to replicate the results or provide a starting point for a new analysis.
     </Card>
     <Card>
       <Fragment slot="title">
 
-### Safer analysis
+### Validation and type checking
 
       </Fragment>
 
-Catch incompatible inputs before expensive computation begins.
-
+Describe the semantic data your method accepts and produces, along with its parameters. Rachis uses these definitions to check inputs and guide how methods can be composed together.
     </Card>
     <Card>
       <Fragment slot="title">
 
-### Less infrastructure to maintain
+### Multiple user interfaces
 
       </Fragment>
 
-Support different interfaces without maintaining separate implementations of your method.
-
+Annotate your method as a plugin once and rachis will make it available through command-line, Python, and graphical interfaces. Users can choose the interface that fits their work, from an exploratory notebook, an HPC workflow, or even a shareable visualization URL.
     </Card>
     <Card>
       <Fragment slot="title">
@@ -181,8 +178,7 @@ Support different interfaces without maintaining separate implementations of you
 
       </Fragment>
 
-Combine your method with existing plugins to create reusable workflows.
-
+A shared language of types and methods means that work can be reused and applied in many different contexts. Methods become generalizable building blocks for large scale reproducible analyses and higher-level tooling.
     </Card>
 
   </div>
@@ -191,7 +187,7 @@ Combine your method with existing plugins to create reusable workflows.
 <Section id="follow-a-result" eyebrow="Artifact internals">
   <Fragment slot="title">
 
-## A result is more useful when you can follow its story.
+## Provenance lets you follow the result's history.
 
   </Fragment>
   <Fragment slot="intro">
@@ -309,7 +305,7 @@ A single portable file carries data, analysis metadata, and provenance history. 
     </ArchiveTree>
     <div className="editorial-copy">
 
-### Built to remain useful.
+### Built to stand the test of time.
 
 Artifacts (`.qza`) and visualizations (`.qzv`) are standard ZIP archives. Their data, metadata, and provenance can be inspected without a centralized service.
 
@@ -474,9 +470,9 @@ Clinical trials
 
 ### Built through scientific collaboration.
 
-QIIME 2 is funded in part by NIH National Cancer Institute Informatics Technology for Cancer Research grant [1U24CA248454-01](https://reporter.nih.gov/project-details/9951750), and by grant [DAF2019-207342](https://doi.org/10.37921/862772dbrrej) from the Chan Zuckerberg Initiative (CZI) DAF, an advised fund of Silicon Valley Community Foundation (CZI grant DOI: 10.37921/862772dbrrej; funder DOI: [10.13039/100014989](https://doi.org/10.13039/100014989)).
+Rachis and MOSHPIT receive support from the Swiss National Science Foundation (SNSF) through grant [10008221](https://data.snf.ch/grants/grant/10008221).
 
-Rachis and MOSHPIT also receive support from the Swiss National Science Foundation (SNSF) through grant [10008221](https://data.snf.ch/grants/grant/10008221).
+QIIME 2 was funded in part by NIH National Cancer Institute Informatics Technology for Cancer Research grant [1U24CA248454-01](https://reporter.nih.gov/project-details/9951750), and by grant [DAF2019-207342](https://doi.org/10.37921/862772dbrrej) from the Chan Zuckerberg Initiative (CZI) DAF, an advised fund of Silicon Valley Community Foundation (CZI grant DOI: 10.37921/862772dbrrej; funder DOI: [10.13039/100014989](https://doi.org/10.13039/100014989)).
 
 QIIME 2's documentation is mostly built with MyST Markdown, which is supported in part with [funding](https://sloan.org/grant-detail/6620) from the Alfred P. Sloan Foundation.
 
