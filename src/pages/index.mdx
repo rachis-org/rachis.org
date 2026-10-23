@@ -178,7 +178,8 @@ Annotate your method as a plugin once and rachis will make it available through 
 
       </Fragment>
 
-A shared language of types and methods means that work can be reused and applied in many different contexts. Methods become generalizable building blocks for large scale reproducible analyses and higher-level tooling.
+A shared language of types and methods means that work can be reused and applied in many different contexts. Plugins can consume artifacts produced by other plugins, allowing researchers to combine methods without needing to run custom conversion scripts before and after each tool.
+
     </Card>
 
   </div>
@@ -430,7 +431,7 @@ Choose compatible plugins, add your own, and provide documentation and workflows
   </Fragment>
   <Fragment slot="intro">
 
-Shared infrastructure lets new methods benefit from existing engineering, and lets that engineering serve new fields. QIIME 2 and MOSHPIT show how a common framework can support distinct scientific workflows and communities.
+Rachis provides the infrastructure used by QIIME 2 and MOSHPIT, including typed artifacts, provenance tracking, and interfaces that other scientific projects can build on.
 
   </Fragment>
   <div className="impact-stats">
