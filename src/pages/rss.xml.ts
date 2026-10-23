@@ -1,12 +1,13 @@
 import { getRssString } from '@astrojs/rss';
 
-import { SITE, METADATA, APP_BLOG } from 'astrowind:config';
-import { fetchPosts } from '~/utils/blog';
+import { SITE, METADATA } from 'astrowind:config';
+import { fetchPosts, isBlogEnabled } from '~/utils/blog';
 import { getPermalink } from '~/utils/permalinks';
+import { getPostExcerpt } from '~/utils/post-excerpt';
 import stylesheet from '../assets/rss-style.xsl';
 
 export const GET = async () => {
-  if (!APP_BLOG.isEnabled) {
+  if (!isBlogEnabled) {
     return new Response(null, {
       status: 404,
       statusText: 'Not found',
@@ -24,7 +25,7 @@ export const GET = async () => {
     items: posts.map((post) => ({
       link: getPermalink(post.permalink, 'post'),
       title: post.title,
-      description: post.excerpt,
+      description: getPostExcerpt(post),
       pubDate: post.publishDate,
     })),
 

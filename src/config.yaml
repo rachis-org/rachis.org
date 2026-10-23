@@ -29,9 +29,9 @@ i18n:
 
 apps:
   blog:
-    # Distribution news stays on the distribution sites.
-    isEnabled: false
-    postsPerPage: 6
+    # Discourse posts are loaded only when DISCOURSE_API_KEY is set at build time.
+    isEnabled: true
+    postsPerPage: 12
 
     post:
       isEnabled: true

@@ -8,6 +8,7 @@ import Section from '~/components/rachis/Section.astro';
 import Card from '~/components/rachis/Card.astro';
 import Visualization from '~/components/rachis/Visualization.astro';
 import ArchiveTree from '~/components/rachis/ArchiveTree.astro';
+import News from '~/components/rachis/News.astro';
 
 export /*
 Keep editorial copy here in MDX. The components in src/components/rachis
@@ -494,3 +495,16 @@ Contribute a plugin, improve the documentation, or help maintain the framework. 
 
   </div>
 </Section>
+
+<News>
+  <Fragment slot="title">
+
+## Announcements & News
+
+  </Fragment>
+  <Fragment slot="actions">
+
+[View all posts →](/news)
+
+  </Fragment>
+</News>

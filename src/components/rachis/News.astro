@@ -1,0 +1,36 @@
+---
+import { APP_BLOG } from 'astrowind:config';
+import Grid from '~/components/blog/Grid.astro';
+import { findLatestPosts, isBlogEnabled } from '~/utils/blog';
+import Section from './Section.astro';
+
+const posts = isBlogEnabled ? await findLatestPosts({ count: 4 }) : [];
+---
+
+{
+  posts.length > 0 && (
+    <Section id="news">
+      <slot name="title" slot="title" />
+      <Grid posts={posts} />
+      {APP_BLOG.list.isEnabled && (
+        <div class="news-actions">
+          <slot name="actions" />
+        </div>
+      )}
+    </Section>
+  )
+}
+
+<style>
+  .news-actions {
+    margin-top: 2rem;
+  }
+  .news-actions :global(p) {
+    margin: 0;
+  }
+  .news-actions :global(a) {
+    color: var(--aw-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

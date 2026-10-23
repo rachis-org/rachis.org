@@ -42,6 +42,7 @@ export const headerData = {
     { text: 'Why Rachis', href: '/#why-rachis' },
     { text: 'Build', href: '/#build' },
     { text: 'Impact', href: '/#impact' },
+    { text: 'News', href: '/news' },
     { text: 'Learn', links: learnLinks },
     { text: 'Community', links: [...communityLinks, codeOfConductLink] },
   ],

@@ -26,7 +26,8 @@ const distroCollection = defineCollection({
 
 const blogLoader = async () => {
     if (!APP_BLOG.isEnabled) return [];
-    let api_key =  import.meta.env.DISCOURSE_API_KEY
+    const api_key = import.meta.env.DISCOURSE_API_KEY?.trim();
+    if (!api_key) return [];
     let headers = {
      'Api-Key': api_key,
      'Api-Username': 'system'
@@ -47,7 +48,7 @@ const blogLoader = async () => {
       let postURL = `https://forum.qiime2.org/t/${post.id}.json`
       // the poor man's waterfall
       await new Promise(r => setTimeout(r, 350 * idx));
-      let topic = await fetch(postURL);
+      let topic = await fetch(postURL, { headers });
       let data;
 
       try {
